@@ -1,5 +1,6 @@
 import { motion, AnimatePresence } from "framer-motion"
 import { useSnapshot } from "valtio"
+import {CustomButton, CusttomButton} from "../components"
 
 //states
 import state from "../store"
@@ -35,9 +36,18 @@ const Home = () => {
                         </h1>
                     </motion.div>
                     <motion.div {...headContentAnimation} className="content">
-                        <p>
-                            Create your exclusive product with our brand-new 3D customization tool. <strong>Releas your imagination</strong>{""} and define your own style
+                        <p className="paragraph">
+                            Create your exclusive product with our brand-new 3D customization tool.
+                            <strong> Releas your imagination</strong>{""}
+                            and define your own style
                         </p>
+                        <CustomButton 
+                            type = "filled"
+                            title="Customize It"
+                            //update our voltio state
+                            handleClick={() => state.intro = false}
+                            customStyles=""
+                        />
                     </motion.div>
 
                 </motion.div>
