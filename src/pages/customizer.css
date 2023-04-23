@@ -1,0 +1,32 @@
+.sideBar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 10;
+}
+
+.tabWrapper {
+    display: flex;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.backBtn {
+    position: absolute;
+    z-index: 10;
+    top: 1.25rem;
+    right: 1.25rem;
+}
+
+.backbutton{
+    width: fit-content;
+    font-weight: bold;
+    font-size: small;
+}
+
+.filtertabs-container {
+    position: absolute;
+    bottom: 0;
+    min-width: 50vh;
+    right: 0;
+}

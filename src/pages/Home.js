@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from "framer-motion"
 import { useSnapshot } from "valtio"
-import {CustomButton, CusttomButton} from "../components"
+import {CustomButton} from "../components"
 
 //states
 import state from "../store"
@@ -46,7 +46,7 @@ const Home = () => {
                             title="Customize It"
                             //update our voltio state
                             handleClick={() => state.intro = false}
-                            customStyles=""
+                            className='custBtn'
                         />
                     </motion.div>
 

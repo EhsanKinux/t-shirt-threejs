@@ -6,7 +6,7 @@
 }
 
 .head-text {
-    color: #fcfcfc;
+    color: #ff9db0;
     margin: 20px;
 }
 
@@ -24,4 +24,10 @@
     font-size: medium;
     color: #fcfcfc;
     margin: 20px;
+}
+
+.custBtn {
+    width: fit-content;
+    font-weight: bold;
+    font-size: small;
 }

@@ -8,7 +8,7 @@ const state = proxy({
     //flag: are we in homepage or not
     intro: true,
     //default color
-    color: '#FEFEFE',
+    color: '#FF7495',
     //Are we currently desplaying a logo on our shirt..?
     isLogoTexture: true,
     isFullTexture: false,
