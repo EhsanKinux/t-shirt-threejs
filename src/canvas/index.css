@@ -1,0 +1,12 @@
+.canvasWrapper {
+    min-width: 50%;
+    height: 20rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.canvas {
+    transition: all ease-in;
+}

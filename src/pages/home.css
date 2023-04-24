@@ -5,23 +5,37 @@
     object-fit: contain;
 }
 
+.droplinked {
+    margin: 2rem;
+    color: #ff0266;
+}
+
 .head-text {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size:3rem;
     color: #ff9db0;
     margin: 20px;
 }
 
 .br {
-    display: block;
+    display: flex;
+
 }
 .content {
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
     gap: 50px;
 }
 
 .paragraph {
-    max-width: 28rem;
-    font-size: medium;
+    max-width: 40rem;
+    font-size: 2rem;
     color: #fcfcfc;
     margin: 20px;
 }

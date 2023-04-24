@@ -26,24 +26,24 @@ const Home = () => {
         {snap.intro && (
             <motion.section className="home" {...slideAnimation('left')}>
                 <motion.header {...slideAnimation("down")}>
-                    <img src="./threejs.png" alt="logo" className="image" />
+                    {/* <img src="./threejs.png" alt="logo" className="image" /> */}
+                    <h1 className="droplinked">Droplinked</h1>
                 </motion.header>
 
                 <motion.div className="home-content" {...headContainerAnimation}>
                     <motion.div {...headTextAnimation}>
-                        <h1 className="head-text">
+                        <h2 className="head-text">
                             LET'S HAVE<br className="br"/> A UNIQ EXPERIENCE
-                        </h1>
+                        </h2>
                     </motion.div>
                     <motion.div {...headContentAnimation} className="content">
                         <p className="paragraph">
                             Create your exclusive product with our brand-new 3D customization tool.
-                            <strong> Releas your imagination</strong>{""}
-                            and define your own style
+                            <strong> Releas your imagination</strong>{" "}and define your own style
                         </p>
                         <CustomButton 
                             type = "filled"
-                            title="Customize It"
+                            title="Customize Your Product"
                             //update our voltio state
                             handleClick={() => state.intro = false}
                             className='custBtn'
