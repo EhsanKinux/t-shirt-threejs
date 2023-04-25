@@ -1,14 +1,20 @@
+
+
 .sideBar {
     position: absolute;
-    top: 0;
     left: 0;
+    bottom: 40vh;
     z-index: 10;
+    
 }
 
 .tabWrapper {
-    display: flex;
-    align-items: center;
-    min-height: 100vh;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.086);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+
 }
 
 .backBtn {
@@ -27,6 +33,8 @@
 .filtertabs-container {
     position: absolute;
     bottom: 0;
-    min-width: 50vh;
-    right: 0;
+    right: 50%;
+    gap: 2rem;
+    display: flex;
+
 }

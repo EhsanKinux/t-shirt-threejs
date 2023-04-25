@@ -1,0 +1,29 @@
+.tab-btn {
+    /* display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(3.5px);
+    -webkit-backdrop-filter: blur(3.5px); */
+
+}
+
+.isfillter {
+    border-radius: 50%;
+}
+
+.notfillter {
+
+}
+
+.isfillterimg {
+    width: 66.666667%;
+    height: 66.666667%;
+}
+
+.notfillterimg{
+    width: 3rem;
+    height: 3rem;
+    object-fit: contain;
+}

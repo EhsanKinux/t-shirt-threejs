@@ -15,7 +15,7 @@ const CanvasModel = () => {
       <Canvas 
         className="canvas"
         shadows
-        camera={{position: [0,0,4.2], fov:50}}
+        camera={{position: [0,0,4.2], fov:66}}
         // preserve the buffers
         gl={{preserveDrawingBuffer:true}}
       >
@@ -23,9 +23,9 @@ const CanvasModel = () => {
         <Environment preset="city"/>
         {/* <BackDropColor/> */}
         <CameraRig>
-          <Center>
+
             <Shirt/>
-          </Center>
+
         </CameraRig>
       </Canvas>
     </div>
