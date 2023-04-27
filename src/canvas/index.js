@@ -1,5 +1,5 @@
 import { Canvas } from "@react-three/fiber"
-import { Environment, Center, SpotLight } from "@react-three/drei"
+import { Environment } from "@react-three/drei"
 
 import BackDropColor from "./BackDropColor";
 import Shirt from "./Shirt";
@@ -21,7 +21,7 @@ const CanvasModel = () => {
       >
         <ambientLight intensity={0.35}/>
         <Environment preset="city"/>
-        {/* <BackDropColor/> */}
+        <BackDropColor/>
         <CameraRig>
 
             <Shirt/>

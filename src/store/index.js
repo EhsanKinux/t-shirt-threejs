@@ -8,7 +8,11 @@ const state = proxy({
     //flag: are we in homepage or not
     intro: true,
     //default color
-    color: '#FF7495',
+    color: {
+        value: '#FF7495',
+    },
+    //the front or back of the shirt is showing
+    showFront: true,
     //Are we currently desplaying a logo on our shirt..?
     isLogoTexture: true,
     isFullTexture: false,

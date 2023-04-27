@@ -1,7 +1,11 @@
 .custBtn {
-    padding: 1rem 1.5rem;
+    padding: 0.5rem 1rem;
     display: flex;
     flex: 1;
     border-radius: 0.5rem;
     border: none;
+}
+
+.logoBtn {
+    font-size: 8px;
 }

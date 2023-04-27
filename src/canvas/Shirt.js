@@ -1,41 +1,42 @@
-import React, { useEffect, useRef, useState } from 'react'
-import * as THREE from 'three';
+import React, { useRef } from 'react'
+;
 import { easing } from 'maath';
 import { useSnapshot } from 'valtio';
 import { useFrame } from '@react-three/fiber';
 import { Decal, useGLTF, useTexture } from '@react-three/drei';
 
 import state from '../store';
-import { Tween } from '@tweenjs/tween.js';
-import ShirtButton from './ShirtButton';
+
 
 
 const Shirt = () => {
   const snap = useSnapshot(state);
   const { nodes, materials } = useGLTF('/tshirt.glb');
+  const shirtRef = useRef();
 
   //textur to apply to tshirt
   const logoTexture = useTexture(snap.logoDecal);
   const fullTextur = useTexture(snap.fullDecal);
   
   // to apply the color smoothly
-  useFrame((state, delta) => easing.dampC(materials['FABRIC_1_FRONT_4193.001'].color, snap.color, 0.25, delta));
+  useFrame((state, delta) => easing.dampC(materials['FABRIC_1_FRONT_4193.001'].color, snap.color.value, 0.25, delta));
 
-  
 
   // to fix updating 
   const stateSring = JSON.stringify(snap);
-
+  
   ////////////////////////rotation/////////////////////////////
+
 
 
   return (
 
       <group key={stateSring}>
+
         <mesh
-          // ref={shirtRef}
+          ref={shirtRef}
           castShadow
-          geometry={nodes.tshirt.geometry}
+          geometry={ nodes.tshirt.geometry }
           material={materials['FABRIC_1_FRONT_4193.001']}
           material-roughness={1}
           dispose={null}
