@@ -31,16 +31,6 @@
     gap: 1rem;
 }
 
-.positionBtn{
-
-}
-
-
-/* .backbutton{
-    width: fit-content;
-    font-weight: bold;
-    font-size: small;
-} */
 
 .filtertabs-container {
     position: absolute;
@@ -48,5 +38,20 @@
     left: 42%;
     gap: 3rem;
     display: flex;
+}
 
+.exportWrapper{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    margin: 40vh 10%;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.exportBtn{
+    margin-bottom: 1rem;
 }

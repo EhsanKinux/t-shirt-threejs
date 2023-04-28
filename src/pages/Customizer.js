@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useSnapshot } from 'valtio';
 
@@ -16,7 +16,7 @@ import './customizer.css'
 
 
 
-const Customizer = ({onButtonClick}) => {
+const Customizer = ({onButtonClick, canvasRef}) => {
   
   const snap = useSnapshot(state);
 
@@ -30,6 +30,11 @@ const Customizer = ({onButtonClick}) => {
 
   //are we currently showing the logo or fulltexture
   const [activeEditorTab, setActiveEditorTab] = useState("");
+
+  //keep track of whether or not the screenshot button has been clicked
+  const [isScreenshotClicked, setIsScreenshotClicked] = useState(false);
+
+
 
 
 
@@ -73,9 +78,24 @@ const Customizer = ({onButtonClick}) => {
 
 
 
+  const handleScreenshotClick = () => {
+    setIsScreenshotClicked(true);
+  };
+
+
+  useEffect(() => {
+    if (isScreenshotClicked && canvasRef.current) {
+      const dataURL = canvasRef.current.toDataURL('image/png');
+      const tempAnchor = document.createElement('a');
+      tempAnchor.href = dataURL;
+      tempAnchor.setAttribute('download', 'screenshot.png');
+      tempAnchor.click();
+      setIsScreenshotClicked(false);
+    }
+  }, [isScreenshotClicked, canvasRef]);
   
-
-
+  
+  
 
   return (
     <div>
@@ -114,7 +134,6 @@ const Customizer = ({onButtonClick}) => {
             >
 
               <CustomButton
-                className='positionBtn'
                 type="filled"
                 title="Show Front"
                 handleClick={() => onButtonClick(0)}
@@ -123,6 +142,28 @@ const Customizer = ({onButtonClick}) => {
                 type="filled"
                 title="Show Back"
                 handleClick={() => onButtonClick(Math.PI)}
+              />
+            </motion.div>
+
+            {/* buttons to export screenshot and recording and animation */}
+            <motion.div
+              className='exportWrapper'
+            >
+              {/* screenshot */}
+              <CustomButton 
+                type="outline"
+                title="ScreenShot"
+                handleClick={handleScreenshotClick}
+              />
+              {/* recording */}
+              <CustomButton
+                type="outline"
+                title="Recording"
+              />
+              {/* animation */}
+              <CustomButton
+                type="outline"
+                title="Animation"
               />
             </motion.div>
             
