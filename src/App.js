@@ -1,6 +1,6 @@
 
 import Canvas from './canvas';
-import Customizer from './pages/Customizer';
+// import Customizer from './pages/Customizer';
 
 
 //style
@@ -13,7 +13,7 @@ function App() {
         <Canvas className="canvas" />
 
       {/* <Home/> */}
-      <Customizer />
+      {/* <Customizer  /> */}
     </div>
   );
 }

@@ -4,11 +4,18 @@ import { Environment } from "@react-three/drei"
 import BackDropColor from "./BackDropColor";
 import Shirt from "./Shirt";
 import CameraRig from "./CameraRig";
+import { useState } from "react";
 
 //styles
 import "./index.css"
+import Customizer from "../pages/Customizer";
 
 const CanvasModel = () => {
+
+  const [angle, setAngle] = useState(0);
+  function handleButtonClick(newAngle) {
+    setAngle(newAngle);
+  }
   return (
     <div className="canvasWrapper">
 
@@ -24,10 +31,11 @@ const CanvasModel = () => {
         <BackDropColor/>
         <CameraRig>
 
-            <Shirt/>
+            <Shirt angle={angle}/>
 
         </CameraRig>
       </Canvas>
+      <Customizer onButtonClick={handleButtonClick} />
     </div>
   )
 }

@@ -4,12 +4,13 @@ import { easing } from 'maath';
 import { useSnapshot } from 'valtio';
 import { useFrame } from '@react-three/fiber';
 import { Decal, useGLTF, useTexture } from '@react-three/drei';
+import * as THREE from 'three';
 
 import state from '../store';
 
 
 
-const Shirt = () => {
+const Shirt = ({angle}) => {
   const snap = useSnapshot(state);
   const { nodes, materials } = useGLTF('/tshirt.glb');
   const shirtRef = useRef();
@@ -26,7 +27,13 @@ const Shirt = () => {
   const stateSring = JSON.stringify(snap);
   
   ////////////////////////rotation/////////////////////////////
+    // Convert the angle to a Quaternion
+    const quaternion = new THREE.Quaternion().setFromEuler(new THREE.Euler(0, angle, 0, 'XYZ'));
 
+    // Set the object's rotation to the quaternion
+    if (shirtRef.current) {
+      shirtRef.current.rotation.setFromQuaternion(quaternion);
+    }
 
 
   return (
@@ -64,7 +71,7 @@ const Shirt = () => {
                 // change the quality of texture
                 map-anisotropy={16}
                 // insure to render on top of the other objects in the scene
-                depthTest={false}
+                // depthTest={false}
                 depthWrite={true}
               />
             )}

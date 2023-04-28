@@ -18,7 +18,7 @@ import './customizer.css'
 
 
 
-const Customizer = () => {
+const Customizer = ({onButtonClick}) => {
   //Are we in hompage or customizer
   const snap = useSnapshot(state);
 
@@ -164,12 +164,12 @@ const Customizer = () => {
                 className='positionBtn'
                 type="filled"
                 title="Show Front"
-                handleClick={() => state.showFront = true}
+                handleClick={() => onButtonClick(0)}
               />
               <CustomButton
                 type="filled"
                 title="Show Back"
-                handleClick={() => state.showFront = false}
+                handleClick={() => onButtonClick(Math.PI)}
               />
             </motion.div>
             
