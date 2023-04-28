@@ -19,21 +19,28 @@
 }
 
 
-.backBtn {
+.toggleWrapper {
     position: absolute;
+    left: 0;
+    right: 0;
+    margin: 0 40%;
     z-index: 10;
-    top: 1.25rem;
-    right: 1.25rem;
+    bottom: 1.25rem;
     display: flex;
-    flex-direction: column;
+    justify-content: center;
     gap: 1rem;
 }
 
-.backbutton{
+.positionBtn{
+
+}
+
+
+/* .backbutton{
     width: fit-content;
     font-weight: bold;
     font-size: small;
-}
+} */
 
 .filtertabs-container {
     position: absolute;

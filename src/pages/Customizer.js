@@ -5,11 +5,9 @@ import { useSnapshot } from 'valtio';
 
 import state from '../store';
 
+import { EditorTabs} from '../config/constants';
 
-import { reader} from '../config/helpers';
-import { EditorTabs, FilterTabs, DecalTypes} from '../config/constants';
-
-import { fadeAnimation, slideAnimation } from '../config/motion';
+import { slideAnimation } from '../config/motion';
 
 import { AIPicker, ColorPicker, CustomButton, FilePicker, Tab } from '../components';
 
@@ -19,7 +17,7 @@ import './customizer.css'
 
 
 const Customizer = ({onButtonClick}) => {
-  //Are we in hompage or customizer
+  
   const snap = useSnapshot(state);
 
   const [file, setFile] = useState('');
@@ -32,10 +30,7 @@ const Customizer = ({onButtonClick}) => {
 
   //are we currently showing the logo or fulltexture
   const [activeEditorTab, setActiveEditorTab] = useState("");
-  const [activeFilterTab, setActivefilterTab] = useState({
-    logoShirt:true,
-    stylishShirt:false,
-  });
+
 
 
   //show the app content depending on the activeTab
@@ -47,7 +42,8 @@ const Customizer = ({onButtonClick}) => {
         return <FilePicker 
                   file={file}
                   setFile={setFile}
-                  readFile={readFile}
+                  readFile
+                  setActiveEditorTab={setActiveEditorTab}
               />
       case "aipicker":
         return <AIPicker
@@ -76,48 +72,10 @@ const Customizer = ({onButtonClick}) => {
   // }
 
 
-  const handleDecals = (type, result) => {
-    const decalType = DecalTypes[type];
-    //update state
-    state[decalType.stateProperty] = result;
 
-    //that decal is currently active
-    if(!activeFilterTab[decalType.filterTab]) {
-      handleActiveFilterTab(decalType.filterTab)
-    }
-  }
-
-  //to keep in mind are we currently showing the logo or texture or both
-  const handleActiveFilterTab = (tabName) => {
-    switch (tabName) {
-      case "logoShirt":
-          state.isLogoTexture = !activeFilterTab[tabName];
-        break;
-      case "stylishShirt" :
-          state.isFullTexture = !activeFilterTab[tabName];
-          break;
-      default:
-        state.isLogoTexture = true;
-        state.isFullTexture = false;
-        break;
-    }
-    //after setting the state, activeFilterTab is updated
-    setActivefilterTab((prevState) => {
-      return {
-        ...prevState,
-        [tabName]: !prevState[tabName]
-      }
-    })
-  }
   
 
-  //get file Data:
-  const readFile = (type) => {
-    reader(file).then((result) => {
-      handleDecals(type, result);
-      setActiveEditorTab("");
-    })
-  }
+
 
   return (
     <div>
@@ -149,17 +107,12 @@ const Customizer = ({onButtonClick}) => {
 
             </motion.div>
 
-            {/* Back Button and changing front and back */}
+            {/* buttons to toggle between the front and back of the shirt */}
             <motion.div
-              className='backBtn'
-              {...fadeAnimation}
+              className='toggleWrapper'
+              {...slideAnimation('up')}
             >
-              {/* <CustomButton
-                type="filled"
-                title="Go Back"
-                handleClick={() => state.intro = true}
-                className="backbutton"
-              /> */}
+
               <CustomButton
                 className='positionBtn'
                 type="filled"
@@ -173,25 +126,6 @@ const Customizer = ({onButtonClick}) => {
               />
             </motion.div>
             
-            {/* buttons to toggle between the front and back of the shirt */}
-
-
-
-            <motion.div
-              className='filtertabs-container'
-              {...slideAnimation('up')}
-            >
-              {FilterTabs.map((tab) => (
-                    <Tab
-                      key={tab.name}
-                      tab={tab}
-                      isfilterTab
-                      isActiveTab={activeFilterTab[tab.name]}
-                      handleClick={() => handleActiveFilterTab(tab.name)}
-                    />
-                  ))}
-
-            </motion.div>
           </>
 
       </AnimatePresence>
