@@ -1,17 +1,11 @@
 import {useEffect, useState} from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useSnapshot } from 'valtio';
-
-
 import state from '../store';
-
 import { EditorTabs} from '../config/constants';
-
 import { slideAnimation } from '../config/motion';
-
 import { AIPicker, ColorPicker, CustomButton, FilePicker, Tab } from '../components';
-
-
+import RecordRTC from 'recordrtc';
 //styles
 import './customizer.css'
 
@@ -33,19 +27,6 @@ const Customizer = ({onButtonClick, canvasRef}) => {
 
   //keep track of whether or not the screenshot button has been clicked
   const [isScreenshotClicked, setIsScreenshotClicked] = useState(false);
-
-  //recoding
-  // const [isStoppingRecording, setIsStoppingRecording] = useState(false);
-  const [recording, setRecording] = useState(false);
-  // const [mediaStream, setMediaStream] = useState(null);
-  // const [mediaRecorder, setMediaRecorder] = useState(null);
-  const [chunks, setChunks] = useState([]);
-
-
-  // Ref for saving the recorded video
-  // const recordedVideoRef = useRef(null);
-
-
 
   //show the app content depending on the activeTab
   const generateTabContent = () => {
@@ -105,63 +86,29 @@ const Customizer = ({onButtonClick, canvasRef}) => {
   }, [isScreenshotClicked, canvasRef]);
   
 
-  //This function first requests access to the user's camera using the getUserMedia method of the navigator.mediaDevices API. Then, it creates a new MediaRecorder instance and starts recording. While recording, data chunks are accumulated in the chunks state variable. Once the recording is stopped (either after 6 seconds or when the user clicks a stop button), the chunks are concatenated into a single blob and downloaded as a file using a temporary anchor element. Finally, the chunks state is reset.
+  //create a new instance of RecordRTC by passing in the canvas stream, then starts recording and stops after 4 seconds. The resulting video is downloaded as a file using a temporary anchor element.
   // start recording the canvas stream
 
   const startRecording = () => {
-    navigator.mediaDevices.getUserMedia({ video: true })
-      .then(async (stream) => {
-        const mediaRecorder = new MediaRecorder(stream, {
-          mimeType: 'video/webm'
-        });
-        mediaRecorder.start();
-  
-        setRecording(true);
-  
-        const canvasStream = canvasRef.current.captureStream(30);
-        mediaRecorder.addEventListener("dataavailable", (event) => {
-          if (event.data.size > 0) {
-            setChunks((prevChunks) => prevChunks.concat(event.data));
-          }
-        });
-  
-        mediaRecorder.addEventListener("stop", () => {
-          setRecording(false);
-  
-          const blob = new Blob(chunks, { type: 'video/webm' });
-      
-          // Display save dialog to allow user to choose location to save file
-          const tempAnchor = document.createElement('a');
-          tempAnchor.href = URL.createObjectURL(blob);
-          tempAnchor.setAttribute('download', 'recording.webm');
-          tempAnchor.click();
-          setTimeout(() => {
-            URL.revokeObjectURL(URL.createObjectURL(blob));
-          }, 1000);
-          setChunks([]);
-        });
-  
-        setTimeout(() => {
-          mediaRecorder.stop();
-          canvasStream.getTracks().forEach(track => track.stop());
-          setRecording(false);
-        }, 4000);
-      })
-      .catch((error) => {
-        console.error("Error starting recording", error);
+    const stream = canvasRef.current.captureStream();
+    const recorder = RecordRTC(stream, {
+      type: 'video',
+      mimeType: 'video/webm',
+      bitsPerSecond: 128000,
+      timeSlice: 4000,
+    });
+    recorder.startRecording();
+    setTimeout(() => {
+      recorder.stopRecording(() => {
+        const blob = recorder.getBlob();
+        const tempAnchor = document.createElement('a');
+        tempAnchor.href = URL.createObjectURL(blob);
+        tempAnchor.download = 'recording.webm';
+        tempAnchor.click();
       });
-};
+    }, 4000);
+  };
 
-
-  
-  
-  
-  
-  
-  
-  
-  
-  
 
   return (
     <div>
@@ -225,10 +172,10 @@ const Customizer = ({onButtonClick, canvasRef}) => {
               <CustomButton
                 type="outline"
                 title="Recording"
-                disabled={recording}
+                
                 handleClick={startRecording}
               />
-              {recording && <div style={{color:snap.color.value}}>Recording...</div>}
+              {/* {recording && <div style={{color:snap.color.value}}>Recording...</div>} */}
               {/* animation */}
               <CustomButton
                 type="outline"
