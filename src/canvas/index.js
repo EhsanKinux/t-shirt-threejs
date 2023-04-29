@@ -1,5 +1,5 @@
 import { Canvas } from "@react-three/fiber"
-import { Environment } from "@react-three/drei"
+import { Center, Environment } from "@react-three/drei"
 
 import BackDropColor from "./BackDropColor";
 import Shirt from "./Shirt";
@@ -45,8 +45,10 @@ const CanvasModel = () => {
         <Environment preset="city"/>
         <BackDropColor/>
         <CameraRig>
+          <Center>
 
             <Shirt angle={angle}/>
+          </Center>
 
         </CameraRig>
       </Canvas>
