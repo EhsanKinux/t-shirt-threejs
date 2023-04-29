@@ -1,14 +1,13 @@
 import { Canvas } from "@react-three/fiber"
 import { Center, Environment } from "@react-three/drei"
-
 import BackDropColor from "./BackDropColor";
 import Shirt from "./Shirt";
 import CameraRig from "./CameraRig";
 import { useEffect, useRef, useState } from "react";
+import Customizer from "../pages/Customizer";
 
 //styles
 import "./index.css"
-import Customizer from "../pages/Customizer";
 
 
 const CanvasModel = () => {

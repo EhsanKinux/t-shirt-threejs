@@ -106,7 +106,7 @@ const Customizer = ({onButtonClick, canvasRef, startAnimation }) => {
         tempAnchor.download = 'recording.webm';
         tempAnchor.click();
       });
-    }, 4000);
+    }, 4700);
   };
   
 
@@ -172,15 +172,14 @@ const Customizer = ({onButtonClick, canvasRef, startAnimation }) => {
               <CustomButton
                 type="outline"
                 title="Recording"
-                
-                handleClick={startRecording}
+                handleClick={() => { startRecording(); startAnimation(); }}
               />
               {/* {recording && <div style={{color:snap.color.value}}>Recording...</div>} */}
               {/* animation */}
               <CustomButton
                 type="outline"
                 title="Animation"
-                handleClick={startAnimation }
+                handleClick={startAnimation}
               />
             </motion.div>
             
