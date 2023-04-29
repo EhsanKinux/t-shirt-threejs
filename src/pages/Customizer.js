@@ -10,7 +10,7 @@ import RecordRTC from 'recordrtc';
 import './customizer.css'
 
 
-const Customizer = ({onButtonClick, canvasRef}) => {
+const Customizer = ({onButtonClick, canvasRef, startAnimation }) => {
   
   const snap = useSnapshot(state);
 
@@ -108,7 +108,7 @@ const Customizer = ({onButtonClick, canvasRef}) => {
       });
     }, 4000);
   };
-
+  
 
   return (
     <div>
@@ -180,6 +180,7 @@ const Customizer = ({onButtonClick, canvasRef}) => {
               <CustomButton
                 type="outline"
                 title="Animation"
+                handleClick={startAnimation }
               />
             </motion.div>
             

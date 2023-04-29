@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useRef} from 'react'
 ;
 import { easing } from 'maath';
 import { useSnapshot } from 'valtio';
@@ -10,7 +10,7 @@ import state from '../store';
 
 
 
-const Shirt = ({angle}) => {
+const Shirt = ({angle, setIsAnimating, isAnimating }) => {
   const snap = useSnapshot(state);
   const { nodes, materials } = useGLTF('/tshirt.glb');
   const shirtRef = useRef();
@@ -24,9 +24,12 @@ const Shirt = ({angle}) => {
 
 
   // to fix updating 
-  const stateSring = JSON.stringify(snap);
+  const stateSring = JSON.stringify(snap); 
   
-  ////////////////////////rotation/////////////////////////////
+
+
+
+  ////////////////////////show back and front/////////////////////////////
     // Convert the angle to a Quaternion
     const quaternion = new THREE.Quaternion().setFromEuler(new THREE.Euler(0, angle, 0, 'XYZ'));
 
@@ -34,6 +37,26 @@ const Shirt = ({angle}) => {
     if (shirtRef.current) {
       shirtRef.current.rotation.setFromQuaternion(quaternion);
     }
+
+///////////////////////////rotation//////////////////////////////
+//the shirt should rotate by Math.PI/2 degrees per second until it has completed a full rotation (2*Math.PI radians)
+
+useFrame((state, delta) => {
+  if (isAnimating) {
+    // calculate the new rotation angle based on the time elapsed since the animation started
+    const newAngle = shirtRef.current.rotation.y + delta * Math.PI / 2;
+    // check if we have completed a full rotation yet
+    if (newAngle >= Math.PI * 2) {
+      // stop the animation when complete
+      setIsAnimating(false);
+      return;
+    }
+    // update the rotation of the t-shirt mesh
+    shirtRef.current.rotation.y = newAngle;
+  }
+});
+
+
 
 
   return (
@@ -80,4 +103,4 @@ const Shirt = ({angle}) => {
   )
 }
 
-export default Shirt
+export default Shirt;

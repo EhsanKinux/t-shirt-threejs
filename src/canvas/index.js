@@ -10,7 +10,10 @@ import { useEffect, useRef, useState } from "react";
 import "./index.css"
 import Customizer from "../pages/Customizer";
 
+
 const CanvasModel = () => {
+
+
 
   // rotation of front and back of the product
   const [angle, setAngle] = useState(0);
@@ -18,6 +21,9 @@ const CanvasModel = () => {
     setAngle(newAngle);
   }
 
+  const [isAnimating, setIsAnimating] = useState(false);
+
+  
   // the useRef hook creates a reference to the canvas element and then use the onCreated property of the Canvas component to wait for the canvas to be created before setting the reference to it
   const canvasRef = useRef();
   const [isCanvasLoaded, setIsCanvasLoaded] = useState(false);
@@ -25,6 +31,12 @@ const CanvasModel = () => {
   useEffect(() => {
     if (canvasRef.current) setIsCanvasLoaded(true);
   }, [canvasRef]);
+  
+  function startAnimation() {
+    setIsAnimating(true);
+  }
+
+  
 
   return (
     <div className="canvasWrapper">
@@ -47,13 +59,13 @@ const CanvasModel = () => {
         <CameraRig>
           <Center>
 
-            <Shirt angle={angle}/>
+            <Shirt angle={angle} setIsAnimating={setIsAnimating} isAnimating={isAnimating}/>
           </Center>
 
         </CameraRig>
       </Canvas>
       {/* Only show the customizer after the canvas has loaded */}
-      {isCanvasLoaded && <Customizer onButtonClick={handleButtonClick} canvasRef={canvasRef} />}
+      {isCanvasLoaded && <Customizer onButtonClick={handleButtonClick} canvasRef={canvasRef} startAnimation={startAnimation}/>}
     </div>
   )
 }
