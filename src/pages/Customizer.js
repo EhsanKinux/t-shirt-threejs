@@ -40,7 +40,7 @@ const Customizer = ({onButtonClick, canvasRef, startAnimation }) => {
         return <FilePicker 
                   file={file}
                   setFile={setFile}
-                  readFile
+            
                   setActiveEditorTab={setActiveEditorTab}
               />
       case "aipicker":

@@ -9,7 +9,7 @@ import { reader } from '../config/helpers';
 import state from '../store';
 import { useSnapshot } from 'valtio';
 
-const FilePicker = ({file, setFile, readFile, setActiveEditorTab}) => {
+const FilePicker = ({file, setFile, setActiveEditorTab}) => {
 
   const snap = useSnapshot(state);
 
@@ -30,7 +30,7 @@ const FilePicker = ({file, setFile, readFile, setActiveEditorTab}) => {
   }
 
     //to keep in mind are we currently showing the logo or texture or both
-    const handleActiveFilterTab = (tabName, readFile) => {
+    const handleActiveFilterTab = (tabName) => {
       switch (tabName) {
         case "logoShirt":
             state.isLogoTexture = !activeFilterTab[tabName];
@@ -51,14 +51,16 @@ const FilePicker = ({file, setFile, readFile, setActiveEditorTab}) => {
         }
       })
 
-      //get file Data:
-      readFile = (type) => {
-        reader(file).then((result) => {
-          handleDecals(type, result);
-          setActiveEditorTab("");
-        })
-      }
     }
+    //get file Data:
+
+    const readFile = (file, type, {handleDecals}, setActiveEditorTab) => {
+      reader(file).then((result) => {
+        handleDecals(type, result);
+        setActiveEditorTab("");
+      });
+    };
+
   return (
     <div className='filepicker-container'>
       <div className='fileWrapper'>
@@ -83,13 +85,19 @@ const FilePicker = ({file, setFile, readFile, setActiveEditorTab}) => {
           <CustomButton
             type="outline"
             title="Logo"
-            handleClick={() => handleActiveFilterTab('logoShirt', readFile)}
+            handleClick={() => {
+              handleActiveFilterTab("logoShirt");
+              readFile(file, "logoShirt", handleDecals, setActiveEditorTab);
+            }}
             className="logoBtn"
           />
           <CustomButton
             type="filled"
             title="Full"
-            handleClick={() => handleActiveFilterTab('stylishShirt', readFile)}
+            handleClick={() => {
+              handleActiveFilterTab("stylishShirt");
+              readFile(file, "stylishShirt", handleDecals, setActiveEditorTab);
+            }}
             className="fullBtn"
           />
 
