@@ -1,4 +1,4 @@
-import React, { useRef} from 'react'
+import React, { useRef, useState} from 'react'
 ;
 import { easing } from 'maath';
 import { useSnapshot } from 'valtio';
@@ -25,7 +25,9 @@ const Shirt = ({angle, setIsAnimating, isAnimating }) => {
 
   // to fix updating 
   const stateSring = JSON.stringify(snap); 
-  
+
+  // use state to keep track of front/back placement
+  const [showText, setShowText] = useState(snap.isFront);
 
 
 
@@ -38,25 +40,102 @@ const Shirt = ({angle, setIsAnimating, isAnimating }) => {
       shirtRef.current.rotation.setFromQuaternion(quaternion);
     }
 
-///////////////////////////rotation//////////////////////////////
-//the shirt should rotate by Math.PI/2 degrees per second until it has completed a full rotation (2*Math.PI radians)
+  ///////////////////////////rotation//////////////////////////////
+  //the shirt should rotate by Math.PI/2 degrees per second until it has completed a full rotation (2*Math.PI radians)
 
-useFrame((state, delta) => {
-  if (isAnimating) {
-    // calculate the new rotation angle based on the time elapsed since the animation started
-    const newAngle = shirtRef.current.rotation.y + delta * Math.PI / 2;
-    // check if we have completed a full rotation yet
-    if (newAngle >= Math.PI * 2) {
-      // stop the animation when complete
-      setIsAnimating(false);
-      return;
+  useFrame((state, delta) => {
+    if (isAnimating) {
+      // calculate the new rotation angle based on the time elapsed since the animation started
+      const newAngle = shirtRef.current.rotation.y + delta * Math.PI / 2;
+      // check if we have completed a full rotation yet
+      if (newAngle >= Math.PI * 2) {
+        // stop the animation when complete
+        setIsAnimating(false);
+        return;
+      }
+      // update the rotation of the t-shirt mesh
+      shirtRef.current.rotation.y = newAngle;
     }
-    // update the rotation of the t-shirt mesh
-    shirtRef.current.rotation.y = newAngle;
+
+    // adjust decal position based on front/back placement
+    const positionZ = showText ? -0.15 : 0.15;
+    const positionY = showText ? 0.04 : -0.04;
+
+    // check if user has entered any text, if yes then show decal otherwise hide it
+    if (snap.textValue !== ' ') {
+      setShowText(true);
+    } else {
+      setShowText(false);
+    }
+    // update position and visibility of the decal based on above conditions
+    shirtRef.current.children.forEach(child => {
+      if (child.type === Decal) {
+        child.visible = showText && snap.textValue !== ' ';
+        child.position.set(0, positionY, positionZ);
+      }
+    });
+  });
+
+
+  const createTextCanvas = (text, textColor) => {
+    const canvas = document.createElement('canvas');
+    const context = canvas.getContext('2d');
+  
+    // Set canvas dimensions based on text length and desired font size
+    const fontSize = 100;
+    const textWidth = context.measureText(text).width;
+    const lineHeight = fontSize * 4;
+    const lines = splitIntoLines(context, text, canvas.width - (fontSize * 4));
+  
+    canvas.width = textWidth + (fontSize * 4);
+    canvas.height = lineHeight * lines.length;
+  
+    // Erase background color
+    context.fillStyle = snap.color.value;
+    context.fillRect(0, 0, canvas.width, canvas.height);
+  
+    // Set text color and font
+    context.fillStyle = textColor;
+    context.font = `${fontSize}px Arial`;
+  
+    // Draw text in center of canvas
+    context.textAlign = 'center';
+    context.textBaseline = 'middle';
+    for (let i = 0; i < lines.length; i++) {
+      context.fillText(lines[i], canvas.width / 2, (i * lineHeight) + (lineHeight / 2));
+    }
+  
+    // Add border to check for color bleeding
+    context.strokeStyle = 'red';
+    context.strokeRect(0, 0, canvas.width, canvas.height);
+  
+    return canvas;
   }
-});
-
-
+  
+  // helper function to split text into multiple lines
+  function splitIntoLines(context, text, maxWidth) {
+    let words = text.split(' ');
+    let lines = [];
+    let currentLine = words[0];
+  
+    for (let i = 1; i < words.length && lines.length < 2; i++) {
+      let word = words[i];
+      let width = context.measureText(currentLine + ' ' + word).width;
+  
+      if (width < maxWidth) {
+        currentLine += ' ' + word;
+      } else {
+        lines.push(currentLine);
+        currentLine = word;
+      }
+    }
+  
+    lines.push(currentLine);
+    // limit to 2 lines
+    return lines.slice(0, 2);
+  }
+  
+  
 
 
   return (
@@ -97,6 +176,21 @@ useFrame((state, delta) => {
                 // depthTest={false}
                 depthWrite={true}
               />
+            )}
+            {!snap.isLogoTexture && showText && snap.textValue !== ' ' && (
+              <Decal
+                position={[0,0,0.17]}
+                rotation={[0, 0, 0]}
+                scale={0.3}
+                // render user-entered text as texture
+                material-roughness={1}
+              >
+                <meshBasicMaterial
+                  map={new THREE.CanvasTexture(
+                    createTextCanvas(snap.textValue, '#000000', '#ffffff')
+                  )}
+                />
+              </Decal>
             )}
         </mesh>
       </group>

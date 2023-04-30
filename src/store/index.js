@@ -19,6 +19,10 @@ const state = proxy({
     //for the initial logo before we upload any logo
     logoDecal: './threejs.png',
     fullDecal: 'threejs.png',
+    // new property to indicate if the text should be applied on front or back of shirt
+    isFront: true,
+    // new property to store the text entered by the user
+    textValue:' '
 })
 
 export default state;

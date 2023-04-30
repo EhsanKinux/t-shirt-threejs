@@ -8,6 +8,7 @@ import { AIPicker, ColorPicker, CustomButton, FilePicker, Tab } from '../compone
 import RecordRTC from 'recordrtc';
 //styles
 import './customizer.css'
+import TextPicker from '../components/TextPicker';
 
 
 const Customizer = ({onButtonClick, canvasRef, startAnimation }) => {
@@ -33,6 +34,8 @@ const Customizer = ({onButtonClick, canvasRef, startAnimation }) => {
     switch (activeEditorTab) {
       case "colorpicker":
         return <ColorPicker/>
+      case "textpicker":
+        return <TextPicker/>
       case "filepicker":
         return <FilePicker 
                   file={file}

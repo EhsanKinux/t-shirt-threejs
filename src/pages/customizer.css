@@ -55,3 +55,22 @@
 .exportBtn{
     margin-bottom: 1rem;
 }
+
+
+@media only screen and (min-device-width : 480px) and (max-device-width : 1124px) {
+    .toggleWrapper{
+        margin: 0 30%;
+    }
+}
+
+@media only screen and (max-device-width : 480px) {
+    .toggleWrapper{
+        margin: 0 10%;
+    }
+    .exportWrapper{
+        margin: 10% 10%;
+    }
+    .headerText{
+        font-size: 14px;
+    }
+}
