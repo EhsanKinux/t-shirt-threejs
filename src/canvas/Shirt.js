@@ -1,19 +1,18 @@
-import React, { useRef, useState} from 'react'
+import React, { useEffect, useRef, useState} from 'react'
 ;
 import { easing } from 'maath';
 import { useSnapshot } from 'valtio';
-import { useFrame } from '@react-three/fiber';
+import { useFrame, useThree } from '@react-three/fiber';
 import { Decal, useGLTF, useTexture } from '@react-three/drei';
 import * as THREE from 'three';
 
 import state from '../store';
 
-
-
-const Shirt = ({angle, setIsAnimating, isAnimating }) => {
+const Shirt = ({angle, setIsAnimating, isAnimating, canvasRef }) => {
   const snap = useSnapshot(state);
   const { nodes, materials } = useGLTF('/tshirt.glb');
   const shirtRef = useRef();
+  const decalRef = useRef();
 
   //textur to apply to tshirt
   const logoTexture = useTexture(snap.logoDecal);
@@ -76,6 +75,7 @@ const Shirt = ({angle, setIsAnimating, isAnimating }) => {
     });
   });
 
+  /////////////////////text control/////////////////////////
 
   const createTextCanvas = (text, textColor) => {
     const canvas = document.createElement('canvas');
@@ -102,7 +102,7 @@ const Shirt = ({angle, setIsAnimating, isAnimating }) => {
     context.textAlign = 'center';
     context.textBaseline = 'middle';
     for (let i = 0; i < lines.length; i++) {
-      context.fillText(lines[i], canvas.width / 2, (i * lineHeight) + (lineHeight / 2));
+      context.fillText(lines[i], fontSize * 2, (i * lineHeight) + (lineHeight / 2));
     }
   
     // Add border to check for color bleeding
@@ -120,10 +120,10 @@ const Shirt = ({angle, setIsAnimating, isAnimating }) => {
   
     for (let i = 1; i < words.length && lines.length < 2; i++) {
       let word = words[i];
-      let width = context.measureText(currentLine + ' ' + word).width;
+      let width = context.measureText(currentLine + '' + word).width;
   
       if (width < maxWidth) {
-        currentLine += ' ' + word;
+        currentLine += '' + word;
       } else {
         lines.push(currentLine);
         currentLine = word;
@@ -135,8 +135,78 @@ const Shirt = ({angle, setIsAnimating, isAnimating }) => {
     return lines.slice(0, 2);
   }
   
+
+  ////////////////////////////drag controle////////////////////
+  const [isDraggingLogo, setIsDraggingLogo] = useState(false);
+  const [previousMousePosition, setPreviousMousePosition] = useState({x: 0, y: 0});
+
+  const { camera } = useThree();
+
+  useEffect(() => {
+    const onMouseDown = (event) => {
+      // calculate normalized device coordinates (-1 to 1) based on mouse position
+      const x = (event.clientX / canvasRef.current.clientWidth) * 2 - 1;
+      const y = -(event.clientY / canvasRef.current.clientHeight) * 2 + 1;
+  
+      // create a new mouse vector based on normalized device coordinates
+      const mouseVector = new THREE.Vector2(x, y);
+  
+      // create a new raycaster and set it to use the camera's perspective projection matrix
+      const raycaster = new THREE.Raycaster();
+      raycaster.setFromCamera(mouseVector, camera);
+  
+      // intersect the ray with the decal to check if the cursor is hovering over the logo
+      const intersection = raycaster.intersectObject(decalRef.current);
+      if (intersection.length > 0) {
+        setIsDraggingLogo(true);
+        // store the current mouse position as the previous position
+        setPreviousMousePosition({ x: event.clientX, y: event.clientY });
+      }
+    }
+  
+    canvasRef.current.addEventListener('mousedown', onMouseDown);
+  
+    return () => {
+      canvasRef.current.removeEventListener('mousedown', onMouseDown);
+    };
+  }, [canvasRef, camera]);
+
+  useEffect(() => {
+    const onMouseMove = (event) => {
+      if (isDraggingLogo) {
+        // calculate the change in mouse position since the last mousemove event
+        const deltaX = event.clientX - previousMousePosition.x;
+        const deltaY = event.clientY - previousMousePosition.y;
+  
+        // update the position of the decal based on the change in mouse position
+        decalRef.current.position.x += deltaX / canvasRef.current.clientWidth * 2;
+        decalRef.current.position.y -= deltaY / canvasRef.current.clientHeight * 2;
+  
+        // store the current mouse position as the previous position for the next mousemove event
+        setPreviousMousePosition({ x: event.clientX, y: event.clientY });
+      }
+    };
+  
+    canvasRef.current.addEventListener('mousemove', onMouseMove);
+  
+    return () => {
+      canvasRef.current.removeEventListener('mousemove', onMouseMove);
+    };
+  }, [canvasRef, decalRef, isDraggingLogo, previousMousePosition]);
   
 
+  useEffect(() => {
+    const onMouseUp = () => {
+      setIsDraggingLogo(false);
+    };
+  
+    canvasRef.current.addEventListener('mouseup', onMouseUp);
+  
+    return () => {
+      canvasRef.current.removeEventListener('mouseup', onMouseUp);
+    };
+  }, [canvasRef]);
+  
 
   return (
 
@@ -150,6 +220,7 @@ const Shirt = ({angle, setIsAnimating, isAnimating }) => {
           material-roughness={1}
           dispose={null}
           scale={1.45}
+  
         >
           {/* showing the logo or texture */}
           {snap.isFullTexture && (
@@ -175,6 +246,7 @@ const Shirt = ({angle, setIsAnimating, isAnimating }) => {
                 // insure to render on top of the other objects in the scene
                 // depthTest={false}
                 depthWrite={true}
+                ref={decalRef}
               />
             )}
             {!snap.isLogoTexture && showText && snap.textValue !== ' ' && (
@@ -187,7 +259,7 @@ const Shirt = ({angle, setIsAnimating, isAnimating }) => {
               >
                 <meshBasicMaterial
                   map={new THREE.CanvasTexture(
-                    createTextCanvas(snap.textValue, '#000000', '#ffffff')
+                    createTextCanvas(snap.textValue, '#000000')
                   )}
                 />
               </Decal>

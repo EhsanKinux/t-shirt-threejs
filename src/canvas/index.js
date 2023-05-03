@@ -58,7 +58,7 @@ const CanvasModel = () => {
         <CameraRig>
           <Center>
 
-            <Shirt angle={angle} setIsAnimating={setIsAnimating} isAnimating={isAnimating}/>
+            <Shirt angle={angle} setIsAnimating={setIsAnimating} isAnimating={isAnimating} canvasRef={canvasRef} />
           </Center>
 
         </CameraRig>

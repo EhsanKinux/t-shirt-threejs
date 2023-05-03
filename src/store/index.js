@@ -22,7 +22,7 @@ const state = proxy({
     // new property to indicate if the text should be applied on front or back of shirt
     isFront: true,
     // new property to store the text entered by the user
-    textValue:' '
+    textValue:' ',
 })
 
 export default state;
