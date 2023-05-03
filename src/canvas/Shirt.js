@@ -143,10 +143,11 @@ const Shirt = ({angle, setIsAnimating, isAnimating, canvasRef }) => {
   const { camera } = useThree();
 
   useEffect(() => {
+    const canvas = canvasRef.current;
     const onMouseDown = (event) => {
       // calculate normalized device coordinates (-1 to 1) based on mouse position
-      const x = (event.clientX / canvasRef.current.clientWidth) * 2 - 1;
-      const y = -(event.clientY / canvasRef.current.clientHeight) * 2 + 1;
+      const x = (event.clientX / canvas.clientWidth) * 2 - 1;
+      const y = -(event.clientY / canvas.clientHeight) * 2 + 1;
   
       // create a new mouse vector based on normalized device coordinates
       const mouseVector = new THREE.Vector2(x, y);
@@ -164,14 +165,15 @@ const Shirt = ({angle, setIsAnimating, isAnimating, canvasRef }) => {
       }
     }
   
-    canvasRef.current.addEventListener('mousedown', onMouseDown);
+    canvas.addEventListener('mousedown', onMouseDown);
   
     return () => {
-      canvasRef.current.removeEventListener('mousedown', onMouseDown);
+      canvas.removeEventListener('mousedown', onMouseDown);
     };
   }, [canvasRef, camera]);
 
   useEffect(() => {
+    const canvas = canvasRef.current;
     const onMouseMove = (event) => {
       if (isDraggingLogo) {
         // calculate the change in mouse position since the last mousemove event
@@ -179,31 +181,32 @@ const Shirt = ({angle, setIsAnimating, isAnimating, canvasRef }) => {
         const deltaY = event.clientY - previousMousePosition.y;
   
         // update the position of the decal based on the change in mouse position
-        decalRef.current.position.x += deltaX / canvasRef.current.clientWidth * 2;
-        decalRef.current.position.y -= deltaY / canvasRef.current.clientHeight * 2;
+        decalRef.current.position.x += deltaX / canvas.clientWidth * 2;
+        decalRef.current.position.y -= deltaY / canvas.clientHeight * 2;
   
         // store the current mouse position as the previous position for the next mousemove event
         setPreviousMousePosition({ x: event.clientX, y: event.clientY });
       }
     };
   
-    canvasRef.current.addEventListener('mousemove', onMouseMove);
+    canvas.addEventListener('mousemove', onMouseMove);
   
     return () => {
-      canvasRef.current.removeEventListener('mousemove', onMouseMove);
+      canvas.removeEventListener('mousemove', onMouseMove);
     };
   }, [canvasRef, decalRef, isDraggingLogo, previousMousePosition]);
   
 
   useEffect(() => {
+    const canvas = canvasRef.current;
     const onMouseUp = () => {
       setIsDraggingLogo(false);
     };
   
-    canvasRef.current.addEventListener('mouseup', onMouseUp);
+    canvas.addEventListener('mouseup', onMouseUp);
   
     return () => {
-      canvasRef.current.removeEventListener('mouseup', onMouseUp);
+      canvas.removeEventListener('mouseup', onMouseUp);
     };
   }, [canvasRef]);
   
