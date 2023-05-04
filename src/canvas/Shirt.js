@@ -173,21 +173,21 @@ const Shirt = ({angle, setIsAnimating, isAnimating, canvasRef }) => {
   })
 
   const dragObject = () => {
-    if(draggable != null){
-      raycaster.setFromCamera(moveMouse, camera)
-      const found = raycaster.intersectObjects(scene.children)
-      if(found.length > 0){
-        for(let o of found){
-          if(!o.object.userData.draggable)
-            continue
-          if(draggable.position){
-            draggable.position.x = o.point.x
-            draggable.position.y = o.point.y  
+    if (draggable != null) {
+      // check if the draggable object is the logo decal
+        raycaster.setFromCamera(moveMouse, camera);
+        const found = raycaster.intersectObjects(scene.children);
+        if (found.length > 0) {
+          for (let o of found) {
+            if (!o.object.userData.shirtSurface) continue;
+            if (decalRef.current) {
+              decalRef.current.position.x = o.point.x;
+              decalRef.current.position.y = o.point.y;
+            }
           }
         }
-      }
     }
-  }  
+  };    
 
   useFrame(() => {
     dragObject();
@@ -207,7 +207,7 @@ const Shirt = ({angle, setIsAnimating, isAnimating, canvasRef }) => {
           material-roughness={1}
           dispose={null}
           scale={1.45}
-          userData={{shirtSurface: true}}
+          userData={{shirtSurface: true, draggable: true}}
         >
           {/* showing the logo or texture */}
           {snap.isFullTexture && (
