@@ -53,13 +53,12 @@ const FilePicker = ({file, setFile, setActiveEditorTab}) => {
 
     }
     //get file Data:
-
-    const readFile = (file, type, {handleDecals}, setActiveEditorTab) => {
+    const readFile = (type) => {
       reader(file).then((result) => {
         handleDecals(type, result);
         setActiveEditorTab("");
-      });
-    };
+      }) 
+    }
 
   return (
     <div className='filepicker-container'>
@@ -85,19 +84,13 @@ const FilePicker = ({file, setFile, setActiveEditorTab}) => {
           <CustomButton
             type="outline"
             title="Logo"
-            handleClick={() => {
-              handleActiveFilterTab("logoShirt");
-              readFile(file, "logoShirt", handleDecals, setActiveEditorTab);
-            }}
+            handleClick={() => readFile('logo')}
             className="logoBtn"
           />
           <CustomButton
             type="filled"
             title="Full"
-            handleClick={() => {
-              handleActiveFilterTab("stylishShirt");
-              readFile(file, "stylishShirt", handleDecals, setActiveEditorTab);
-            }}
+            handleClick={() => readFile('full')}
             className="fullBtn"
           />
 

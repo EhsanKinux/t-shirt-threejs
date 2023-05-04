@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState} from 'react'
+import React, { useRef, useState} from 'react'
 ;
 import { easing } from 'maath';
 import { useSnapshot } from 'valtio';
@@ -137,79 +137,63 @@ const Shirt = ({angle, setIsAnimating, isAnimating, canvasRef }) => {
   
 
   ////////////////////////////drag controle////////////////////
-  const [isDraggingLogo, setIsDraggingLogo] = useState(false);
-  const [previousMousePosition, setPreviousMousePosition] = useState({x: 0, y: 0});
 
-  const { camera } = useThree();
+  const raycaster = new THREE.Raycaster();
+  // x and y position of mouse click
+  const clickMouse = new THREE.Vector2();
+  // information about the last mouse movement position
+  const moveMouse = new THREE.Vector2();
+  var draggable = THREE.Object3D;
+  const { camera, scene } = useThree();
 
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    const onMouseDown = (event) => {
-      // calculate normalized device coordinates (-1 to 1) based on mouse position
-      const x = (event.clientX / canvas.clientWidth) * 2 - 1;
-      const y = -(event.clientY / canvas.clientHeight) * 2 + 1;
+  window.addEventListener('click', event => {
+
+    if(draggable){
+      draggable = null
+      return;
+    }
+    // calculate pointer position in normalized device coordinates
+    // (-1 to +1) for both components
+    clickMouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+    clickMouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+
+    // update the picking ray with the camera and pointer position
+	  raycaster.setFromCamera( clickMouse, camera );
+    // calculate objects intersecting the picking ray
+    const found = raycaster.intersectObjects( scene.children );
+    if(found.length > 0 && found[0].object.userData.draggable){
+      draggable = found[0].object
+      console.log(`found draggable ${draggable.userData}`)
+    }
+  })
   
-      // create a new mouse vector based on normalized device coordinates
-      const mouseVector = new THREE.Vector2(x, y);
-  
-      // create a new raycaster and set it to use the camera's perspective projection matrix
-      const raycaster = new THREE.Raycaster();
-      raycaster.setFromCamera(mouseVector, camera);
-  
-      // intersect the ray with the decal to check if the cursor is hovering over the logo
-      const intersection = raycaster.intersectObject(decalRef.current);
-      if (intersection.length > 0) {
-        setIsDraggingLogo(true);
-        // store the current mouse position as the previous position
-        setPreviousMousePosition({ x: event.clientX, y: event.clientY });
+  window.addEventListener('mousemove', event => {
+    moveMouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+    moveMouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+  })
+
+  const dragObject = () => {
+    if(draggable != null){
+      raycaster.setFromCamera(moveMouse, camera)
+      const found = raycaster.intersectObjects(scene.children)
+      if(found.length > 0){
+        for(let o of found){
+          if(!o.object.userData.draggable)
+            continue
+          if(draggable.position){
+            draggable.position.x = o.point.x
+            draggable.position.y = o.point.y  
+          }
+        }
       }
     }
-  
-    canvas.addEventListener('mousedown', onMouseDown);
-  
-    return () => {
-      canvas.removeEventListener('mousedown', onMouseDown);
-    };
-  }, [canvasRef, camera]);
+  }  
 
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    const onMouseMove = (event) => {
-      if (isDraggingLogo) {
-        // calculate the change in mouse position since the last mousemove event
-        const deltaX = event.clientX - previousMousePosition.x;
-        const deltaY = event.clientY - previousMousePosition.y;
-  
-        // update the position of the decal based on the change in mouse position
-        decalRef.current.position.x += deltaX / canvas.clientWidth * 2;
-        decalRef.current.position.y -= deltaY / canvas.clientHeight * 2;
-  
-        // store the current mouse position as the previous position for the next mousemove event
-        setPreviousMousePosition({ x: event.clientX, y: event.clientY });
-      }
-    };
-  
-    canvas.addEventListener('mousemove', onMouseMove);
-  
-    return () => {
-      canvas.removeEventListener('mousemove', onMouseMove);
-    };
-  }, [canvasRef, decalRef, isDraggingLogo, previousMousePosition]);
-  
+  useFrame(() => {
+    dragObject();
+  })
 
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    const onMouseUp = () => {
-      setIsDraggingLogo(false);
-    };
-  
-    canvas.addEventListener('mouseup', onMouseUp);
-  
-    return () => {
-      canvas.removeEventListener('mouseup', onMouseUp);
-    };
-  }, [canvasRef]);
-  
+
 
   return (
 
@@ -223,7 +207,7 @@ const Shirt = ({angle, setIsAnimating, isAnimating, canvasRef }) => {
           material-roughness={1}
           dispose={null}
           scale={1.45}
-  
+          userData={{shirtSurface: true}}
         >
           {/* showing the logo or texture */}
           {snap.isFullTexture && (
@@ -239,7 +223,7 @@ const Shirt = ({angle, setIsAnimating, isAnimating, canvasRef }) => {
             {/* showing the logo */}
             {snap.isLogoTexture && (
               <Decal
-                position={[0,0.04,0.15]}
+                position={[0, 0.04, 0.15]}
                 rotation={[0,0,0]}
                 scale={0.15}
                 // render logo
@@ -250,6 +234,7 @@ const Shirt = ({angle, setIsAnimating, isAnimating, canvasRef }) => {
                 // depthTest={false}
                 depthWrite={true}
                 ref={decalRef}
+                userData={{draggable: true}}
               />
             )}
             {!snap.isLogoTexture && showText && snap.textValue !== ' ' && (
