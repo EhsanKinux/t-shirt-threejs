@@ -1,24 +1,32 @@
-import {useEffect, useState} from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
-import { useSnapshot } from 'valtio';
-import state from '../store';
-import { EditorTabs} from '../config/constants';
-import { slideAnimation } from '../config/motion';
-import { AIPicker, ColorPicker, CustomButton, FilePicker, Tab } from '../components';
-import RecordRTC from 'recordrtc';
+import { useCallback, useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { useSnapshot } from "valtio";
+import state from "../store";
+import { slideAnimation } from "../config/motion";
+import {
+  AIPicker,
+  ColorPicker,
+  CustomButton,
+  FilePicker,
+} from "../components";
+import RecordRTC from "recordrtc";
 //styles
-import './customizer.css'
-import TextPicker from '../components/TextPicker';
+import "./customizer.css";
+import TextPicker from "../components/TextPicker";
+import { IconContext } from "react-icons";
+import { BsCamera, BsCameraVideo, BsTextareaT } from "react-icons/bs";
+import { BiRotateRight } from "react-icons/bi";
+import { MdColorLens } from "react-icons/md";
+import { BsRobot } from "react-icons/bs";
+import { AiFillFileImage } from "react-icons/ai";
 
-
-const Customizer = ({onButtonClick, canvasRef, startAnimation }) => {
-  
+const Customizer = ({ onButtonClick, canvasRef, startAnimation }) => {
   const snap = useSnapshot(state);
 
-  const [file, setFile] = useState('');
+  const [file, setFile] = useState("");
 
   //AI prompt
-  const [prompt, setPrompt] = useState('');
+  const [prompt, setPrompt] = useState("");
 
   //are we currently generating the image or not
   // const [generatingImg, setGeneratingImg] = useState(false);
@@ -30,37 +38,40 @@ const Customizer = ({onButtonClick, canvasRef, startAnimation }) => {
   const [isScreenshotClicked, setIsScreenshotClicked] = useState(false);
 
   //show the app content depending on the activeTab
-  const generateTabContent = () => {
+  const generateTabContent = useCallback(() => {
     switch (activeEditorTab) {
       case "colorpicker":
-        return <ColorPicker/>
+        return <ColorPicker />;
       case "textpicker":
-        return <TextPicker/>
+        return <TextPicker />;
       case "filepicker":
-        return <FilePicker 
-                  file={file}
-                  setFile={setFile}
-            
-                  setActiveEditorTab={setActiveEditorTab}
-              />
+        return (
+          <FilePicker
+            file={file}
+            setFile={setFile}
+            setActiveEditorTab={setActiveEditorTab}
+          />
+        );
       case "aipicker":
-        return <AIPicker
-                prompt={prompt}
-                setPrompt={setPrompt}
-                // generatingImg={generatingImg}
-                handleSumbmit
-              />
+        return (
+          <AIPicker
+            prompt={prompt}
+            setPrompt={setPrompt}
+            // generatingImg={generatingImg}
+            handleSumbmit
+          />
+        );
       default:
         return null;
     }
-  }
+  }, [activeEditorTab, file, prompt]);
   //ai submit
   // const handleSumbmit = async (type) => {
   //   if(!prompt) return alert("Please enter a prompt");
 
   //   try {
   //     //call our backend to generate an ai image:
-      
+
   //   } catch (error) {
   //     alert(error)
   //   } finally {
@@ -69,25 +80,25 @@ const Customizer = ({onButtonClick, canvasRef, startAnimation }) => {
   //   }
   // }
 
-
-
   //screenShot
   const handleScreenshotClick = () => {
     setIsScreenshotClicked(true);
   };
 
+  useEffect(() => {
+    generateTabContent();
+  }, [activeEditorTab, generateTabContent]);
 
   useEffect(() => {
     if (isScreenshotClicked && canvasRef.current) {
-      const dataURL = canvasRef.current.toDataURL('image/png');
-      const tempAnchor = document.createElement('a');
+      const dataURL = canvasRef.current.toDataURL("image/png");
+      const tempAnchor = document.createElement("a");
       tempAnchor.href = dataURL;
-      tempAnchor.setAttribute('download', 'screenshot.png');
+      tempAnchor.setAttribute("download", "screenshot.png");
       tempAnchor.click();
       setIsScreenshotClicked(false);
     }
   }, [isScreenshotClicked, canvasRef]);
-  
 
   //create a new instance of RecordRTC by passing in the canvas stream, then starts recording and stops after 4 seconds. The resulting video is downloaded as a file using a temporary anchor element.
   // start recording the canvas stream
@@ -95,8 +106,8 @@ const Customizer = ({onButtonClick, canvasRef, startAnimation }) => {
   const startRecording = () => {
     const stream = canvasRef.current.captureStream();
     const recorder = RecordRTC(stream, {
-      type: 'video',
-      mimeType: 'video/webm',
+      type: "video",
+      mimeType: "video/webm",
       bitsPerSecond: 128000,
       timeSlice: 4000,
     });
@@ -104,93 +115,154 @@ const Customizer = ({onButtonClick, canvasRef, startAnimation }) => {
     setTimeout(() => {
       recorder.stopRecording(() => {
         const blob = recorder.getBlob();
-        const tempAnchor = document.createElement('a');
+        const tempAnchor = document.createElement("a");
         tempAnchor.href = URL.createObjectURL(blob);
-        tempAnchor.download = 'recording.webm';
+        tempAnchor.download = "recording.webm";
         tempAnchor.click();
       });
     }, 4700);
   };
-  
 
   return (
-    <div>
-      <AnimatePresence >
+    <div className="customizerWrapper">
+      <AnimatePresence>
+        <>
+          <motion.header {...slideAnimation("down")}>
+            <h1 style={{ color: `${snap.color.value}` }} className="headerText">
+              Droplinked
+            </h1>
+          </motion.header>
 
-          <>
-            <motion.header {...slideAnimation("down")}>
-              {/* <img src="./threejs.png" alt="logo" className="image" /> */}
-              <h1 style={{color:`${snap.color.value}`}} className='headerText' >Droplinked</h1>
-            </motion.header>
+          {/* leftside Tabs */}
+          <motion.div
+            key="custom"
+            className="sideBar"
+            {...slideAnimation("left")}
+          >
+            <div className="sidebarIcons">
+              <IconContext.Provider
+                value={{
+                  color: "white",
+                  size: "2rem",
+                  style: {
+                    cursor: "pointer",
+                    opacity: activeEditorTab === "colorpicker" ? "100%" : "60%",
+                  },
+                  className: "sidebarBtn",
+                }}
+              >
+                <MdColorLens
+                  onClick={() => setActiveEditorTab("colorpicker")}
+                />
+              </IconContext.Provider>
+              <IconContext.Provider
+                value={{
+                  color: "white",
+                  size: "2rem",
+                  style: {
+                    cursor: "pointer",
+                    opacity: activeEditorTab === "textpicker" ? "100%" : "60%",
+                  },
+                  className: "sidebarBtn",
+                }}
+              >
+                <BsTextareaT onClick={() => setActiveEditorTab("textpicker")} />
+              </IconContext.Provider>
+              <IconContext.Provider
+                value={{
+                  color: "white",
+                  size: "2rem",
+                  style: {
+                    cursor: "pointer",
+                    opacity: activeEditorTab === "filepicker" ? "100%" : "60%",
+                  },
+                  className: "sidebarBtn",
+                }}
+              >
+                <AiFillFileImage
+                  onClick={() => setActiveEditorTab("filepicker")}
+                />
+              </IconContext.Provider>
+              <IconContext.Provider
+                value={{
+                  color: "white",
+                  size: "2rem",
+                  style: {
+                    cursor: "pointer",
+                    opacity: activeEditorTab === "aipicker" ? "100%" : "60%",
+                  },
+                }}
+              >
+                <BsRobot onClick={() => setActiveEditorTab("aipicker")} />
+              </IconContext.Provider>
+            </div>
 
-            {/* leftside Tabs */}
-            <motion.div
-              key="custom"
-              className='sideBar'
-              {...slideAnimation('left')}
+            <div className="sidebarContent">{generateTabContent()}</div>
+          </motion.div>
+          {/* buttons to toggle between the front and back of the shirt */}
+          <motion.div className="toggleWrapper" {...slideAnimation("up")}>
+            <CustomButton
+              type="outline"
+              title="Show Front"
+              handleClick={() => onButtonClick(0)}
+            />
+            <CustomButton
+              type="outline"
+              title="Show Back"
+              handleClick={() => onButtonClick(Math.PI)}
+            />
+          </motion.div>
+
+          {/* buttons to export screenshot and recording and animation */}
+          <motion.div className="exportWrapper">
+            {/* screenshot */}
+            <IconContext.Provider
+              value={{
+                color: snap.color.value,
+                size: "2rem",
+                style: { cursor: "pointer" },
+              }}
             >
+              <BsCamera onClick={handleScreenshotClick} />
+            </IconContext.Provider>
 
-
-                  {EditorTabs.map((tab) => (
-                    <Tab
-                      key={tab.name}
-                      tab={tab}
-                      handleClick={() => setActiveEditorTab(tab.name) }
-                    />
-                  ))}
-                  {generateTabContent()}
-
-
-            </motion.div>
-
-            {/* buttons to toggle between the front and back of the shirt */}
-            <motion.div
-              className='toggleWrapper'
-              {...slideAnimation('up')}
+            {/* recording */}
+            <IconContext.Provider
+              value={{
+                color: snap.color.value,
+                size: "2rem",
+                style: { cursor: "pointer" },
+              }}
             >
-
-              <CustomButton
-                type="filled"
-                title="Show Front"
-                handleClick={() => onButtonClick(0)}
+              <BsCameraVideo
+                onClick={() => {
+                  startRecording();
+                  startAnimation();
+                }}
               />
-              <CustomButton
-                type="filled"
-                title="Show Back"
-                handleClick={() => onButtonClick(Math.PI)}
-              />
-            </motion.div>
+            </IconContext.Provider>
 
-            {/* buttons to export screenshot and recording and animation */}
-            <motion.div
-              className='exportWrapper'
+            {/* {recording && <div style={{color:snap.color.value},size:"2rem"}>Recording...</div>} */}
+            {/* animation */}
+            <IconContext.Provider
+              value={{
+                color: snap.color.value,
+                size: "2rem",
+                style: { cursor: "pointer" },
+              }}
             >
-              {/* screenshot */}
-              <CustomButton 
-                type="outline"
-                title="ScreenShot"
-                handleClick={handleScreenshotClick}
-              />
-              {/* recording */}
-              <CustomButton
-                type="outline"
-                title="Recording"
-                handleClick={() => { startRecording(); startAnimation(); }}
-              />
-              {/* {recording && <div style={{color:snap.color.value}}>Recording...</div>} */}
-              {/* animation */}
-              <CustomButton
+              <BiRotateRight
                 type="outline"
                 title="Animation"
-                handleClick={startAnimation}
+                onClick={startAnimation}
+                style={{ color: snap.color.value }}
               />
-            </motion.div>
-            
-          </>
-
+            </IconContext.Provider>
+          </motion.div>
+        </>
       </AnimatePresence>
     </div>
-  )
-}
+  );
+};
 
-export default Customizer
+export default Customizer;

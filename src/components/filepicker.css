@@ -1,13 +1,15 @@
 .filepicker-container {
-    position: absolute;
-    left: 100%;
-    top: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: fit-content;
+    margin: auto;
     padding: 2rem;
     border-radius: 8px;
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.086);
     backdrop-filter: blur(4px);
     -webkit-backdrop-filter: blur(4px);
-}
+  }
 
 .fileWrapper {
     display: flex;
@@ -18,16 +20,6 @@
 .input {
     display: none;
 }
-
-/* .filepicker-lable {
-    color: #fefefe;
-    border: black 1px solid;
-    border-radius: 0.5rem;
-    padding: 0.5rem 0 0.5rem 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-} */
 
 .filepicker-lable {
   appearance: none;

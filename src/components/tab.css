@@ -6,10 +6,6 @@
     border-radius: 50%;
 }
 
-.notfillter {
-
-}
-
 .isfillterimg {
     width: 66.666667%;
     height: 66.666667%;
@@ -20,3 +16,8 @@
     height: 2rem;
     object-fit: contain;
 }
+
+.sidebarBtn {
+    cursor: pointer;
+  }
+  

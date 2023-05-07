@@ -1,22 +1,11 @@
-/* .custBtn {
-    padding: 0.5rem 1rem;
-    display: flex;
-    flex: 1;
-    border-radius: 0.5rem;
-    border: none;
-} */
-
 .custBtn{
     appearance: none;
     background-color: transparent;
-    border: 2px solid #1A1A1A;
     border-radius: 10px;
     box-sizing: border-box;
-    color: #3B3B3B;
     cursor: pointer;
     display: inline-block;
     font-size: 16px;
-    /* font-weight: 600; */
     line-height: normal;
     margin: 0;
     outline: none;
@@ -27,7 +16,6 @@
     user-select: none;
     -webkit-user-select: none;
     touch-action: manipulation;
-    width: 100%;
     will-change: transform;
 }
 
