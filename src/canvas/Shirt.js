@@ -2,7 +2,7 @@ import React, { useRef, useState} from 'react'
 ;
 import { easing } from 'maath';
 import { useSnapshot } from 'valtio';
-import { useFrame, useThree } from '@react-three/fiber';
+import { useFrame } from '@react-three/fiber';
 import { Decal, useGLTF, useTexture } from '@react-three/drei';
 import * as THREE from 'three';
 
