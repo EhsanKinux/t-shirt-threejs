@@ -1,6 +1,6 @@
 import { Canvas } from "@react-three/fiber"
 import { Center, Environment } from "@react-three/drei"
-import BackDropColor from "./BackDropColor";
+// import BackDropColor from "./BackDropColor";
 import Shirt from "./Shirt";
 import CameraRig from "./CameraRig";
 import { useEffect, useRef, useState } from "react";
