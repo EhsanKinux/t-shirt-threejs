@@ -46,6 +46,7 @@ const CanvasModel = () => {
         camera={{position: [0,0,4.2], fov:66}}
         // preserve the buffers
         gl={{preserveDrawingBuffer:true}}
+        raycaster={{ far: 3.5 }}
         // to keep track of whether the canvas has loaded or not
         onCreated={(state) => {
           canvasRef.current = state.gl.domElement;
@@ -54,7 +55,7 @@ const CanvasModel = () => {
       >
         <ambientLight intensity={0.35}/>
         <Environment preset="city"/>
-        <BackDropColor/>
+        {/* <BackDropColor/> */}
         <CameraRig>
           <Center>
 

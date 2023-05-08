@@ -138,60 +138,62 @@ const Shirt = ({angle, setIsAnimating, isAnimating, canvasRef }) => {
 
   ////////////////////////////drag controle////////////////////
 
-  const raycaster = new THREE.Raycaster();
-  // x and y position of mouse click
-  const clickMouse = new THREE.Vector2();
-  // information about the last mouse movement position
-  const moveMouse = new THREE.Vector2();
-  var draggable = THREE.Object3D;
-  const { camera, scene } = useThree();
+//   const raycaster = new THREE.Raycaster();
+//   // x and y position of mouse click
+//   const clickMouse = new THREE.Vector2();
+//   // information about the last mouse movement position
+//   const moveMouse = new THREE.Vector2();
+//   var draggable = THREE.Object3D;
+//   const { camera, scene } = useThree();
 
-  window.addEventListener('click', event => {
+//   window.addEventListener('click', event => {
 
-    if(draggable){
-      draggable = null
-      return;
-    }
-    // calculate pointer position in normalized device coordinates
-    // (-1 to +1) for both components
-    clickMouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
-    clickMouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+//     if(draggable){
+//       draggable = null
+//       return;
+//     }
+//     // calculate pointer position in normalized device coordinates
+//     // (-1 to +1) for both components
+//     clickMouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+//     clickMouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
 
-    // update the picking ray with the camera and pointer position
-	  raycaster.setFromCamera( clickMouse, camera );
-    // calculate objects intersecting the picking ray
-    const found = raycaster.intersectObjects( scene.children );
-    if(found.length > 0 && found[0].object.userData.draggable){
-      draggable = found[0].object
-      console.log(`found draggable ${draggable.userData}`)
-    }
-  })
+//     // update the picking ray with the camera and pointer position
+// 	  raycaster.setFromCamera( clickMouse, camera );
+//     // calculate objects intersecting the picking ray
+//     const found = raycaster.intersectObjects( scene.children );
+//     if(found.length > 0 && found[0].object.userData.draggable){
+//       draggable = found[0].object
+//       console.log(`found draggable ${draggable.userData}`)
+//     }
+//   })
   
-  window.addEventListener('mousemove', event => {
-    moveMouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
-    moveMouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
-  })
+//   window.addEventListener('mousemove', event => {
+//     moveMouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+//     moveMouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+//   })
 
-  const dragObject = () => {
-    if (draggable != null) {
-      // check if the draggable object is the logo decal
-        raycaster.setFromCamera(moveMouse, camera);
-        const found = raycaster.intersectObjects(scene.children);
-        if (found.length > 0) {
-          for (let o of found) {
-            if (!o.object.userData.shirtSurface) continue;
-            if (decalRef.current) {
-              decalRef.current.position.x = o.point.x;
-              decalRef.current.position.y = o.point.y;
-            }
-          }
-        }
-    }
-  };    
+//   const dragObject = () => {
+//     if (draggable != null) {
+//       // check if the draggable object is the logo decal
+//         raycaster.setFromCamera(moveMouse, camera);
+// const found = raycaster.intersectObjects(scene.children, true); // include all descendants
+// if (found.length > 0) {
+//   const intersection = found[0];
+//   const object = intersection.object;
+//   if (object.userData.shirtSurface) {
+//     if (decalRef.current) {
+//       // set decal position to intersection point
+//       decalRef.current.position.copy(intersection.point);
+//     }
+//   }
+// }
 
-  useFrame(() => {
-    dragObject();
-  })
+//     }
+//   };    
+
+//   useFrame(() => {
+//     dragObject();
+//   })
 
 
 
@@ -213,10 +215,11 @@ const Shirt = ({angle, setIsAnimating, isAnimating, canvasRef }) => {
           {snap.isFullTexture && (
             <Decal
               position={[0,0,0]}
-              rotation={[0,0,0]}
+              // rotation={[0,0,0]}
               scale={1}
               // render texture
               map={fullTextur}
+              
             />
 
             )}
@@ -231,7 +234,7 @@ const Shirt = ({angle, setIsAnimating, isAnimating, canvasRef }) => {
                 // change the quality of texture
                 map-anisotropy={16}
                 // insure to render on top of the other objects in the scene
-                // depthTest={false}
+                depthTest={true}
                 depthWrite={true}
                 ref={decalRef}
                 userData={{draggable: true}}
