@@ -6,7 +6,6 @@ import { slideAnimation } from "../config/motion";
 import {
   AIPicker,
   ColorPicker,
-  CustomButton,
   FilePicker,
 } from "../components";
 import RecordRTC from "recordrtc";
@@ -14,13 +13,14 @@ import RecordRTC from "recordrtc";
 import "./customizer.css";
 import TextPicker from "../components/TextPicker";
 import { IconContext } from "react-icons";
-import { BsCamera, BsCameraVideo, BsTextareaT } from "react-icons/bs";
+import { BsCamera, BsCameraVideo } from "react-icons/bs";
+// import { BsTextareaT } from "react-icons/bs";
 import { BiRotateRight } from "react-icons/bi";
-import { MdColorLens } from "react-icons/md";
-import { BsRobot } from "react-icons/bs";
+import { MdColorLens, MdFlipCameraAndroid } from "react-icons/md";
+// import { BsRobot } from "react-icons/bs";
 import { AiFillFileImage } from "react-icons/ai";
 
-const Customizer = ({ onButtonClick, canvasRef, startAnimation }) => {
+const Customizer = ({ onButtonClick, canvasRef, startAnimation, angle }) => {
   const snap = useSnapshot(state);
 
   const [file, setFile] = useState("");
@@ -127,7 +127,7 @@ const Customizer = ({ onButtonClick, canvasRef, startAnimation }) => {
     <div className="customizerWrapper">
       <AnimatePresence>
         <>
-          <motion.header {...slideAnimation("down")}>
+          <motion.header {...slideAnimation("left")}>
             <h1 style={{ color: `${snap.color.value}` }} className="headerText">
               Droplinked
             </h1>
@@ -155,7 +155,7 @@ const Customizer = ({ onButtonClick, canvasRef, startAnimation }) => {
                   onClick={() => setActiveEditorTab("colorpicker")}
                 />
               </IconContext.Provider>
-              <IconContext.Provider
+              {/* <IconContext.Provider
                 value={{
                   color: "white",
                   size: "2rem",
@@ -167,7 +167,7 @@ const Customizer = ({ onButtonClick, canvasRef, startAnimation }) => {
                 }}
               >
                 <BsTextareaT onClick={() => setActiveEditorTab("textpicker")} />
-              </IconContext.Provider>
+              </IconContext.Provider> */}
               <IconContext.Provider
                 value={{
                   color: "white",
@@ -183,7 +183,7 @@ const Customizer = ({ onButtonClick, canvasRef, startAnimation }) => {
                   onClick={() => setActiveEditorTab("filepicker")}
                 />
               </IconContext.Provider>
-              <IconContext.Provider
+              {/* <IconContext.Provider
                 value={{
                   color: "white",
                   size: "2rem",
@@ -194,27 +194,18 @@ const Customizer = ({ onButtonClick, canvasRef, startAnimation }) => {
                 }}
               >
                 <BsRobot onClick={() => setActiveEditorTab("aipicker")} />
-              </IconContext.Provider>
+              </IconContext.Provider> */}
             </div>
 
             <div className="sidebarContent">{generateTabContent()}</div>
           </motion.div>
-          {/* buttons to toggle between the front and back of the shirt */}
-          <motion.div className="toggleWrapper" {...slideAnimation("up")}>
-            <CustomButton
-              type="outline"
-              title="Show Front"
-              handleClick={() => onButtonClick(0)}
-            />
-            <CustomButton
-              type="outline"
-              title="Show Back"
-              handleClick={() => onButtonClick(Math.PI)}
-            />
-          </motion.div>
+
 
           {/* buttons to export screenshot and recording and animation */}
-          <motion.div className="exportWrapper">
+          <motion.div 
+            className="exportWrapper"
+            {...slideAnimation("right")}
+          >
             {/* screenshot */}
             <IconContext.Provider
               value={{
@@ -255,6 +246,22 @@ const Customizer = ({ onButtonClick, canvasRef, startAnimation }) => {
                 type="outline"
                 title="Animation"
                 onClick={startAnimation}
+                style={{ color: snap.color.value }}
+              />
+            </IconContext.Provider>
+            
+            {/* buttons to toggle between the front and back of the shirt */}
+            <IconContext.Provider
+              value={{
+                color: snap.color.value,
+                size: "2rem",
+                style: { cursor: "pointer" },
+              }}
+            >
+              <MdFlipCameraAndroid
+                type="outline"
+                title="Rotate"
+                onClick={() => onButtonClick(angle ? 0 : Math.PI)}
                 style={{ color: snap.color.value }}
               />
             </IconContext.Provider>

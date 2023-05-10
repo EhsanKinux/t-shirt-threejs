@@ -3,11 +3,12 @@ import { Center, Environment } from "@react-three/drei"
 // import BackDropColor from "./BackDropColor";
 import Shirt from "./Shirt";
 import CameraRig from "./CameraRig";
-import { useEffect, useRef, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import Customizer from "../pages/Customizer";
 
 //styles
 import "./index.css"
+import Loading from "../components/Loading";
 
 
 const CanvasModel = () => {
@@ -57,15 +58,17 @@ const CanvasModel = () => {
         <Environment preset="city"/>
         {/* <BackDropColor/> */}
         <CameraRig>
-          <Center>
 
-            <Shirt angle={angle} setIsAnimating={setIsAnimating} isAnimating={isAnimating} canvasRef={canvasRef} />
+          <Center>
+            <Suspense fallback={Loading}>
+              <Shirt angle={angle} setIsAnimating={setIsAnimating} isAnimating={isAnimating} canvasRef={canvasRef} />
+            </Suspense>
           </Center>
 
         </CameraRig>
       </Canvas>
       {/* Only show the customizer after the canvas has loaded */}
-      {isCanvasLoaded && <Customizer onButtonClick={handleButtonClick} canvasRef={canvasRef} startAnimation={startAnimation}/>}
+      {isCanvasLoaded && <Customizer onButtonClick={handleButtonClick} canvasRef={canvasRef} startAnimation={startAnimation} angle={angle} />}
     </div>
   )
 }
