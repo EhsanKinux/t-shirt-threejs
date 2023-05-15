@@ -1,0 +1,9 @@
+.wrapper{
+
+}
+
+.iconImg{
+    width: 2.5rem;
+    height: 2rem;
+    object-fit: contain;
+}

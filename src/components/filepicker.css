@@ -4,7 +4,7 @@
     justify-content: center;
     height: fit-content;
     margin: auto;
-    padding: 2rem;
+    padding: 1rem;
     border-radius: 8px;
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.086);
     backdrop-filter: blur(4px);
@@ -73,6 +73,8 @@
 
 .buttonWrapper {
     display: flex;
+    justify-content: center;
+    align-items: center;
     flex-direction: column;
     gap: 1rem;
 }
@@ -81,6 +83,12 @@
     display: flex;
     justify-content: center;
     object-fit: contain;
+}
+
+.logoPositionWrapper {
+  display: flex;
+  gap: 1rem;
+  margin: 0.5rem;
 }
 
 .logoTextureShow{

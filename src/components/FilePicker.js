@@ -3,11 +3,12 @@ import CustomButton from './CustomButton'
 
 //styles
 import "./filepicker.css"
-import { DecalTypes, FilterTabs } from '../config/constants';
+import { DecalTypes, FilterPosition, FilterTabs } from '../config/constants';
 import Tab from './Tab';
 import { reader } from '../config/helpers';
 import state from '../store';
 import { useSnapshot } from 'valtio';
+import SwitchLogo from './SwitchLogo';
 
 const FilePicker = ({file, setFile, setActiveEditorTab}) => {
 
@@ -94,6 +95,14 @@ const FilePicker = ({file, setFile, setActiveEditorTab}) => {
             className="fullBtn"
           /> */}
 
+        </div>
+        <div className='logoPositionWrapper'>
+          {FilterPosition.map((pos) => (
+            <SwitchLogo
+              key={pos.name}
+              pos={pos}
+            />
+          ))}
         </div>
         <div className='logoTextureShow'>
           {FilterTabs.map((tab) => (

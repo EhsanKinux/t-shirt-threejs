@@ -6,5 +6,8 @@ import textIcon from "./note.png"
 
 import logoShirt from "./logo-tshirt.png";
 import stylishShirt from "./stylish-tshirt.png";
+import leftPosition from "./leftLogo.png";
+import middlePosition from "./middleLogo.png";
+import rightPosition from "./rightLogo.png"
 
-export { ai, fileIcon, swatch, download, logoShirt, stylishShirt, textIcon };
+export { ai, fileIcon, swatch, download, logoShirt, stylishShirt, textIcon, leftPosition, middlePosition, rightPosition };

@@ -1,4 +1,4 @@
-import { swatch, fileIcon, ai, logoShirt, textIcon } from "../assets";
+import { swatch, fileIcon, ai, logoShirt, textIcon, leftPosition, rightPosition, middlePosition } from "../assets";
 
 export const EditorTabs = [
   {
@@ -17,6 +17,21 @@ export const EditorTabs = [
     name: "aipicker",
     icon: ai,
   },
+];
+
+export const FilterPosition = [
+  {
+    name: "leftPosition",
+    icon: leftPosition 
+  },
+  {
+    name: "middlePosition",
+    icon: middlePosition
+  },
+  {
+    name: "rightPosition",
+    icon: rightPosition
+  }
 ];
 
 export const FilterTabs = [
