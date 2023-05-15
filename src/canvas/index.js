@@ -9,10 +9,15 @@ import Customizer from "../pages/Customizer";
 //styles
 import "./index.css"
 import Loading from "../components/Loading";
+import { getContrastingColor } from "../config/helpers";
+import { useSnapshot } from "valtio";
+import state from "../store";
+// import Server from "../server/Server";
 
 
 const CanvasModel = () => {
 
+  const snap = useSnapshot(state)
 
 
   // rotation of front and back of the product
@@ -39,7 +44,7 @@ const CanvasModel = () => {
   
 
   return (
-    <div className="canvasWrapper">
+    <div className="canvasWrapper" style={{backgroundColor: getContrastingColor(snap.color.value)}}>
 
       <Canvas 
         className="canvas"
@@ -69,6 +74,7 @@ const CanvasModel = () => {
       </Canvas>
       {/* Only show the customizer after the canvas has loaded */}
       {isCanvasLoaded && <Customizer onButtonClick={handleButtonClick} canvasRef={canvasRef} startAnimation={startAnimation} angle={angle} />}
+      {/* {isCanvasLoaded && <Server canvasRef={canvasRef}/>} */}
     </div>
   )
 }

@@ -142,7 +142,7 @@ const Customizer = ({ onButtonClick, canvasRef, startAnimation, angle }) => {
             <div className="sidebarIcons">
               <IconContext.Provider
                 value={{
-                  color: "white",
+                  color: `${snap.color.value}`,
                   size: "2rem",
                   style: {
                     cursor: "pointer",
@@ -170,7 +170,7 @@ const Customizer = ({ onButtonClick, canvasRef, startAnimation, angle }) => {
               </IconContext.Provider> */}
               <IconContext.Provider
                 value={{
-                  color: "white",
+                  color: `${snap.color.value}`,
                   size: "2rem",
                   style: {
                     cursor: "pointer",

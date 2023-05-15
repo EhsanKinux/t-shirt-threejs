@@ -1,5 +1,5 @@
 import React from 'react';
-import { SketchPicker } from 'react-color';
+import { CirclePicker } from 'react-color';
 import { useSnapshot } from 'valtio';
 
 //styles
@@ -11,10 +11,10 @@ const ColorPicker = () => {
 
   return (
     <div className='container'>
-      <SketchPicker
+      <CirclePicker
         className='colorpicker'
         color={snap.color.value}
-        disableAlpha
+        // disableAlpha
         presetColors={[
           '#EDCBD2', '#80C4B7', '#E3856B', 
           '#3B5BA5', '#E87A5D', '#F3B941',

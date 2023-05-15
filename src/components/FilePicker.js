@@ -35,12 +35,12 @@ const FilePicker = ({file, setFile, setActiveEditorTab}) => {
         case "logoShirt":
             state.isLogoTexture = !activeFilterTab[tabName];
           break;
-        case "stylishShirt" :
-            state.isFullTexture = !activeFilterTab[tabName];
-            break;
+        // case "stylishShirt" :
+        //     state.isFullTexture = !activeFilterTab[tabName];
+        //     break;
         default:
           state.isLogoTexture = true;
-          state.isFullTexture = false;
+          // state.isFullTexture = false;
           break;
       }
       //after setting the state, activeFilterTab is updated
@@ -71,28 +71,28 @@ const FilePicker = ({file, setFile, setActiveEditorTab}) => {
           className='input'
         />
         <label htmlFor='file-upload' className='filepicker-lable' style={{backgroundColor: snap.color.value}}>
-          Upload File
+          Upload Your File
         </label>
 
-        <p className='filepicker-paragraph'>
+        <span className='filepicker-paragraph'>
           {file ==='' ? "No file selected" : file.name }
-        </p>
+        </span>
       </div>
 
       <div className='buttonWrapper'>
         <div className='logoOrTextureBtn'>
           <CustomButton
             type="outline"
-            title="Logo"
+            title="Click to set logo"
             handleClick={() => readFile('logo')}
             className="logoBtn"
           />
-          <CustomButton
+          {/* <CustomButton
             type="filled"
             title="Full"
             handleClick={() => readFile('full')}
             className="fullBtn"
-          />
+          /> */}
 
         </div>
         <div className='logoTextureShow'>

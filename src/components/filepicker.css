@@ -65,8 +65,9 @@
 .filepicker-paragraph {
     padding: 1rem;
     color: #fefefe;
-    display: flex;
+    display: block;
     font-size: small;
+    overflow: hidden;
 
 }
 
@@ -78,7 +79,8 @@
 
 .logoOrTextureBtn{
     display: flex;
-    gap: 0.5rem;
+    justify-content: center;
+    object-fit: contain;
 }
 
 .logoTextureShow{

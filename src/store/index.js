@@ -11,6 +11,10 @@ const state = proxy({
     color: {
         value: '#FF7495',
     },
+    // default background color
+    bgColor: {
+        value:'#1e1e1e'
+    },
     //the front or back of the shirt is showing
     showFront: true,
     //Are we currently desplaying a logo on our shirt..?

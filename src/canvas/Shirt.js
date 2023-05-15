@@ -16,7 +16,7 @@ const Shirt = ({angle, setIsAnimating, isAnimating, canvasRef }) => {
 
   //textur to apply to tshirt
   const logoTexture = useTexture(snap.logoDecal);
-  const fullTextur = useTexture(snap.fullDecal);
+  // const fullTextur = useTexture(snap.fullDecal);
   
   // to apply the color smoothly
   useFrame((state, delta) => easing.dampC(materials['FABRIC_1_FRONT_4193.001'].color, snap.color.value, 0.25, delta));
@@ -135,7 +135,6 @@ const Shirt = ({angle, setIsAnimating, isAnimating, canvasRef }) => {
     return lines.slice(0, 2);
   }
   
-
   ////////////////////////////drag controle////////////////////
 
 //   const raycaster = new THREE.Raycaster();
@@ -195,8 +194,6 @@ const Shirt = ({angle, setIsAnimating, isAnimating, canvasRef }) => {
 //     dragObject();
 //   })
 
-
-
   return (
 
       <group key={stateSring}>
@@ -207,12 +204,12 @@ const Shirt = ({angle, setIsAnimating, isAnimating, canvasRef }) => {
           geometry={ nodes.tshirt.geometry }
           material={materials['FABRIC_1_FRONT_4193.001']}
           material-roughness={1}
-          dispose={null}
+          // dispose={null}
           scale={1.45}
           userData={{shirtSurface: true, draggable: true}}
         >
           {/* showing the logo or texture */}
-          {snap.isFullTexture && (
+          {/* {snap.isFullTexture && (
             <Decal
               position={[0,0,0]}
               // rotation={[0,0,0]}
@@ -220,7 +217,7 @@ const Shirt = ({angle, setIsAnimating, isAnimating, canvasRef }) => {
               // render texture
               map={fullTextur}
               
-            />
+            /> */}
 
             )}
             {/* showing the logo */}
