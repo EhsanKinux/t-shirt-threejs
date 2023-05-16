@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 ;
 import { easing } from 'maath';
 import { useSnapshot } from 'valtio';
@@ -28,7 +28,8 @@ const Shirt = ({angle, setIsAnimating, isAnimating, canvasRef, showFront }) => {
   // use state to keep track of front/back placement
   // const [showText, setShowText] = useState(snap.isFront);
 
-
+  const [logoPosition, setLogoPosition] = useState([0, 0.05, 0.15]);
+  const [rotation, setRotation] = useState([0,0,0]);
 
   ////////////////////////show back and front/////////////////////////////
     // Convert the angle to a Quaternion
@@ -55,9 +56,6 @@ const Shirt = ({angle, setIsAnimating, isAnimating, canvasRef, showFront }) => {
       // update the rotation of the t-shirt mesh
       shirtRef.current.rotation.y = newAngle;
     }
-
-
-
     // // adjust decal position based on front/back placement
     // const positionZ = showText ? -0.15 : 0.15;
     // const positionY = showText ? 0.04 : -0.04;
@@ -76,18 +74,19 @@ const Shirt = ({angle, setIsAnimating, isAnimating, canvasRef, showFront }) => {
     //   }
     // });
   });
-    //update logo position based on front/back placement
-    if (showFront) {
-      var setLogoPosition = [0, 0.05, 0.15];
-      var rotation=[0,0,0]
-    } else {
-        setLogoPosition = [0, 0.05, -0.15];
-        rotation=[0,3.5,0];
-    }
+  
 
-  // useEffect(() => {
-  //   setPositionZ(showFront ? 0.15 : -0.15);
-  // }, [showFront]);
+
+useEffect(() => {
+      //update logo position based on front/back placement
+      if (!showFront) {
+        setLogoPosition([0, 0.05, -0.15]);
+        setRotation([0,3.5,0]);
+      } else {
+        setLogoPosition([0, 0.05, 0.15]);
+        setRotation([0,0,0]);
+      }
+}, [ showFront, snap.isLogoTexture])
   /////////////////////text control/////////////////////////
 
   // const createTextCanvas = (text, textColor) => {
@@ -177,7 +176,7 @@ const Shirt = ({angle, setIsAnimating, isAnimating, canvasRef, showFront }) => {
             {/* showing the logo */}
             {snap.isLogoTexture && snap.position.middle && (
               <Decal
-                position={setLogoPosition}
+                position={logoPosition}
                 rotation={rotation}
                 scale={0.15}
                 // render logo
