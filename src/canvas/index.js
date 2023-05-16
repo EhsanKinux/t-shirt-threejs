@@ -19,6 +19,8 @@ const CanvasModel = () => {
 
   const snap = useSnapshot(state)
 
+  //state to keep track of logo decal position
+  const [showFront, setShowFront] = useState(true);
 
   // rotation of front and back of the product
   const [angle, setAngle] = useState(0);
@@ -66,14 +68,14 @@ const CanvasModel = () => {
 
           <Center>
             <Suspense fallback={Loading}>
-              <Shirt angle={angle} setIsAnimating={setIsAnimating} isAnimating={isAnimating} canvasRef={canvasRef} />
+              <Shirt angle={angle} setIsAnimating={setIsAnimating} isAnimating={isAnimating} canvasRef={canvasRef} showFront={showFront} setLogoPosition/>
             </Suspense>
           </Center>
 
         </CameraRig>
       </Canvas>
       {/* Only show the customizer after the canvas has loaded */}
-      {isCanvasLoaded && <Customizer onButtonClick={handleButtonClick} canvasRef={canvasRef} startAnimation={startAnimation} angle={angle} />}
+      {isCanvasLoaded && <Customizer onButtonClick={handleButtonClick} canvasRef={canvasRef} startAnimation={startAnimation} angle={angle} setShowFront={setShowFront} showFront={showFront} />}
       {/* {isCanvasLoaded && <Server canvasRef={canvasRef}/>} */}
     </div>
   )

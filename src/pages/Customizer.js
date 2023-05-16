@@ -20,7 +20,7 @@ import { MdColorLens, MdFlipCameraAndroid } from "react-icons/md";
 // import { BsRobot } from "react-icons/bs";
 import { AiFillFileImage } from "react-icons/ai";
 
-const Customizer = ({ onButtonClick, canvasRef, startAnimation, angle }) => {
+const Customizer = ({ onButtonClick, canvasRef, startAnimation, angle, setShowFront, showFront }) => {
   const snap = useSnapshot(state);
 
   const [file, setFile] = useState("");
@@ -261,7 +261,10 @@ const Customizer = ({ onButtonClick, canvasRef, startAnimation, angle }) => {
               <MdFlipCameraAndroid
                 type="outline"
                 title="Rotate"
-                onClick={() => onButtonClick(angle ? 0 : Math.PI)}
+                onClick={() => {
+                            onButtonClick(angle ? 0 : Math.PI);
+                            setShowFront (!showFront); // toggle state variable here
+                        }}
                 style={{ color: snap.color.value }}
               />
             </IconContext.Provider>

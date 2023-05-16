@@ -3,8 +3,8 @@ import CustomButton from './CustomButton'
 
 //styles
 import "./filepicker.css"
-import { DecalTypes, FilterPosition, FilterTabs } from '../config/constants';
-import Tab from './Tab';
+import { DecalTypes, FilterPosition} from '../config/constants';
+// import Tab from './Tab';
 import { reader } from '../config/helpers';
 import state from '../store';
 import { useSnapshot } from 'valtio';
@@ -13,12 +13,14 @@ import SwitchLogo from './SwitchLogo';
 const FilePicker = ({file, setFile, setActiveEditorTab}) => {
 
   const snap = useSnapshot(state);
-
+  
   const [activeFilterTab, setActivefilterTab] = useState({
     logoShirt:true,
     stylishShirt:false,
   });
-
+  
+  const [checked, setChecked] = React.useState(true);
+  
   const handleDecals = (type, result) => {
     const decalType = DecalTypes[type];
     //update state
@@ -135,8 +137,15 @@ const FilePicker = ({file, setFile, setActiveEditorTab}) => {
             />
           ))}
         </div>
-        <div className='logoTextureShow'>
-          {FilterTabs.map((tab) => (
+        <label className='switch'>
+          <input 
+            type="checkbox" 
+            defaultChecked={checked}
+            onChange={() => setChecked(!checked)}
+            onClick={() => handleActiveFilterTab("logoShirt")}
+          />
+          <span className="slider"></span>
+          {/* {FilterTabs.map((tab) => (
             <Tab
               key={tab.name}
               tab={tab}
@@ -144,9 +153,9 @@ const FilePicker = ({file, setFile, setActiveEditorTab}) => {
               isActiveTab={activeFilterTab[tab.name]}
               handleClick={() => handleActiveFilterTab(tab.name)}
             />
-          ))}
+          ))} */}
 
-        </div>
+        </label>
 
       </div>
 

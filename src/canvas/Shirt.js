@@ -1,4 +1,4 @@
-import React, { useRef, useState} from 'react'
+import React, { useRef } from 'react'
 ;
 import { easing } from 'maath';
 import { useSnapshot } from 'valtio';
@@ -8,7 +8,7 @@ import * as THREE from 'three';
 
 import state from '../store';
 
-const Shirt = ({angle, setIsAnimating, isAnimating, canvasRef }) => {
+const Shirt = ({angle, setIsAnimating, isAnimating, canvasRef, showFront }) => {
   const snap = useSnapshot(state);
   const { nodes, materials } = useGLTF('/tshirt.glb');
   const shirtRef = useRef();
@@ -26,7 +26,7 @@ const Shirt = ({angle, setIsAnimating, isAnimating, canvasRef }) => {
   const stateSring = JSON.stringify(snap); 
 
   // use state to keep track of front/back placement
-  const [showText, setShowText] = useState(snap.isFront);
+  // const [showText, setShowText] = useState(snap.isFront);
 
 
 
@@ -56,25 +56,36 @@ const Shirt = ({angle, setIsAnimating, isAnimating, canvasRef }) => {
       shirtRef.current.rotation.y = newAngle;
     }
 
-    // adjust decal position based on front/back placement
-    const positionZ = showText ? -0.15 : 0.15;
-    const positionY = showText ? 0.04 : -0.04;
 
-    // check if user has entered any text, if yes then show decal otherwise hide it
-    if (snap.textValue !== ' ') {
-      setShowText(true);
-    } else {
-      setShowText(false);
-    }
-    // update position and visibility of the decal based on above conditions
-    shirtRef.current.children.forEach(child => {
-      if (child.type === Decal) {
-        child.visible = showText && snap.textValue !== ' ';
-        child.position.set(0, positionY, positionZ);
-      }
-    });
+
+    // // adjust decal position based on front/back placement
+    // const positionZ = showText ? -0.15 : 0.15;
+    // const positionY = showText ? 0.04 : -0.04;
+
+    // // check if user has entered any text, if yes then show decal otherwise hide it
+    // if (snap.textValue !== ' ') {
+    //   setShowText(true);
+    // } else {
+    //   setShowText(false);
+    // }
+    // // update position and visibility of the decal based on above conditions
+    // shirtRef.current.children.forEach(child => {
+    //   if (child.type === Decal) {
+    //     child.visible = showText && snap.textValue !== ' ';
+    //     child.position.set(0, positionY, positionZ);
+    //   }
+    // });
   });
+    //update logo position based on front/back placement
+    if (showFront) {
+      var setLogoPosition = [0, 0.05, 0.15];
+    } else {
+        setLogoPosition = [0, 0.05, -0.15];
+    }
 
+  // useEffect(() => {
+  //   setPositionZ(showFront ? 0.15 : -0.15);
+  // }, [showFront]);
   /////////////////////text control/////////////////////////
 
   // const createTextCanvas = (text, textColor) => {
@@ -164,7 +175,7 @@ const Shirt = ({angle, setIsAnimating, isAnimating, canvasRef }) => {
             {/* showing the logo */}
             {snap.isLogoTexture && snap.position.middle && (
               <Decal
-                position={[0, 0.05, 0.15]}
+                position={setLogoPosition}
                 rotation={[0,0,0]}
                 scale={0.15}
                 // render logo
@@ -210,6 +221,22 @@ const Shirt = ({angle, setIsAnimating, isAnimating, canvasRef }) => {
                 // userData={{draggable: true}}
               />
             )}
+            {/* {snap.isLogoTexture && !snap.showFront && (
+              <Decal
+                position={[0, 0.15, -0.15]}
+                rotation={[0,3.5,0]}
+                scale={0.15}
+                // render logo
+                map={logoTexture}
+                // change the quality of texture
+                map-anisotropy={16}
+                // insure to render on top of the other objects in the scene
+                depthTest={true}
+                depthWrite={true}
+                ref={decalRef}
+                // userData={{draggable: true}}
+              />
+            )} */}
             {/* {!snap.isLogoTexture && showText && snap.textValue !== ' ' && (
               <Decal
                 position={[0,0,0.17]}

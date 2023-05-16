@@ -1,18 +1,10 @@
-import { swatch, fileIcon, ai, logoShirt, textIcon, leftPosition, rightPosition, middlePosition } from "../assets";
+import { ai, logoShirt, leftPosition, rightPosition, middlePosition } from "../assets";
 
 export const EditorTabs = [
-  {
-    name: "colorpicker",
-    icon: swatch,
-  },
-  {
-    name: "textpicker",
-    icon: textIcon,
-  },
-  {
-    name: "filepicker",
-    icon: fileIcon,
-  },
+  // {
+  //   name: "textpicker",
+  //   icon: textIcon,
+  // },
   {
     name: "aipicker",
     icon: ai,
