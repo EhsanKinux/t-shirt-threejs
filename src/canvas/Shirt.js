@@ -79,8 +79,10 @@ const Shirt = ({angle, setIsAnimating, isAnimating, canvasRef, showFront }) => {
     //update logo position based on front/back placement
     if (showFront) {
       var setLogoPosition = [0, 0.05, 0.15];
+      var rotation=[0,0,0]
     } else {
         setLogoPosition = [0, 0.05, -0.15];
+        rotation=[0,3.5,0];
     }
 
   // useEffect(() => {
@@ -176,7 +178,7 @@ const Shirt = ({angle, setIsAnimating, isAnimating, canvasRef, showFront }) => {
             {snap.isLogoTexture && snap.position.middle && (
               <Decal
                 position={setLogoPosition}
-                rotation={[0,0,0]}
+                rotation={rotation}
                 scale={0.15}
                 // render logo
                 map={logoTexture}
