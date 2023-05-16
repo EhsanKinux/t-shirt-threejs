@@ -61,6 +61,36 @@ const FilePicker = ({file, setFile, setActiveEditorTab}) => {
       }) 
     }
 
+    const handleLogoPosition = (posName) => {
+      // create a copy of the current position object
+      const newPosition = { ...snap.position };
+    
+      // toggle the appropriate position flag
+      switch (posName) {
+        case "leftPosition":
+          newPosition.left = true;
+          newPosition.middle = false;
+          newPosition.right = false;
+          break;
+        case "middlePosition":
+          newPosition.left = false;
+          newPosition.middle = true;
+          newPosition.right = false;
+          break;
+        case "rightPosition":
+          newPosition.left = false;
+          newPosition.middle = false;
+          newPosition.right = true;
+          break;
+        default:
+          break;
+      }
+    
+      // update the state with the new position
+      state.position = newPosition;
+    };
+    
+
   return (
     <div className='filepicker-container'>
       <div className='fileWrapper'>
@@ -101,6 +131,7 @@ const FilePicker = ({file, setFile, setActiveEditorTab}) => {
             <SwitchLogo
               key={pos.name}
               pos={pos}
+              handleClick={() => handleLogoPosition(pos.name)}
             />
           ))}
         </div>

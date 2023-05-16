@@ -77,63 +77,63 @@ const Shirt = ({angle, setIsAnimating, isAnimating, canvasRef }) => {
 
   /////////////////////text control/////////////////////////
 
-  const createTextCanvas = (text, textColor) => {
-    const canvas = document.createElement('canvas');
-    const context = canvas.getContext('2d');
+  // const createTextCanvas = (text, textColor) => {
+  //   const canvas = document.createElement('canvas');
+  //   const context = canvas.getContext('2d');
   
-    // Set canvas dimensions based on text length and desired font size
-    const fontSize = 100;
-    const textWidth = context.measureText(text).width;
-    const lineHeight = fontSize * 4;
-    const lines = splitIntoLines(context, text, canvas.width - (fontSize * 4));
+  //   // Set canvas dimensions based on text length and desired font size
+  //   const fontSize = 100;
+  //   const textWidth = context.measureText(text).width;
+  //   const lineHeight = fontSize * 4;
+  //   const lines = splitIntoLines(context, text, canvas.width - (fontSize * 4));
   
-    canvas.width = textWidth + (fontSize * 4);
-    canvas.height = lineHeight * lines.length;
+  //   canvas.width = textWidth + (fontSize * 4);
+  //   canvas.height = lineHeight * lines.length;
   
-    // Erase background color
-    context.fillStyle = snap.color.value;
-    context.fillRect(0, 0, canvas.width, canvas.height);
+  //   // Erase background color
+  //   context.fillStyle = snap.color.value;
+  //   context.fillRect(0, 0, canvas.width, canvas.height);
   
-    // Set text color and font
-    context.fillStyle = textColor;
-    context.font = `${fontSize}px Arial`;
+  //   // Set text color and font
+  //   context.fillStyle = textColor;
+  //   context.font = `${fontSize}px Arial`;
   
-    // Draw text in center of canvas
-    context.textAlign = 'center';
-    context.textBaseline = 'middle';
-    for (let i = 0; i < lines.length; i++) {
-      context.fillText(lines[i], fontSize * 2, (i * lineHeight) + (lineHeight / 2));
-    }
+  //   // Draw text in center of canvas
+  //   context.textAlign = 'center';
+  //   context.textBaseline = 'middle';
+  //   for (let i = 0; i < lines.length; i++) {
+  //     context.fillText(lines[i], fontSize * 2, (i * lineHeight) + (lineHeight / 2));
+  //   }
   
-    // Add border to check for color bleeding
-    context.strokeStyle = 'red';
-    context.strokeRect(0, 0, canvas.width, canvas.height);
+  //   // Add border to check for color bleeding
+  //   context.strokeStyle = 'red';
+  //   context.strokeRect(0, 0, canvas.width, canvas.height);
   
-    return canvas;
-  }
+  //   return canvas;
+  // }
   
-  // helper function to split text into multiple lines
-  function splitIntoLines(context, text, maxWidth) {
-    let words = text.split(' ');
-    let lines = [];
-    let currentLine = words[0];
+  // // helper function to split text into multiple lines
+  // function splitIntoLines(context, text, maxWidth) {
+  //   let words = text.split(' ');
+  //   let lines = [];
+  //   let currentLine = words[0];
   
-    for (let i = 1; i < words.length && lines.length < 2; i++) {
-      let word = words[i];
-      let width = context.measureText(currentLine + '' + word).width;
+  //   for (let i = 1; i < words.length && lines.length < 2; i++) {
+  //     let word = words[i];
+  //     let width = context.measureText(currentLine + '' + word).width;
   
-      if (width < maxWidth) {
-        currentLine += '' + word;
-      } else {
-        lines.push(currentLine);
-        currentLine = word;
-      }
-    }
+  //     if (width < maxWidth) {
+  //       currentLine += '' + word;
+  //     } else {
+  //       lines.push(currentLine);
+  //       currentLine = word;
+  //     }
+  //   }
   
-    lines.push(currentLine);
-    // limit to 2 lines
-    return lines.slice(0, 2);
-  }
+  //   lines.push(currentLine);
+  //   // limit to 2 lines
+  //   return lines.slice(0, 2);
+  // }
   
 
   return (
@@ -146,9 +146,9 @@ const Shirt = ({angle, setIsAnimating, isAnimating, canvasRef }) => {
           geometry={ nodes.tshirt.geometry }
           material={materials['FABRIC_1_FRONT_4193.001']}
           material-roughness={1}
-          // dispose={null}
+          dispose={null}
           scale={1.45}
-          userData={{shirtSurface: true, draggable: true}}
+          // userData={{shirtSurface: true, draggable: true}}
         >
           {/* showing the logo or texture */}
           {/* {snap.isFullTexture && (
@@ -162,9 +162,9 @@ const Shirt = ({angle, setIsAnimating, isAnimating, canvasRef }) => {
             />
           )} */}
             {/* showing the logo */}
-            {snap.isLogoTexture && (
+            {snap.isLogoTexture && snap.position.middle && (
               <Decal
-                position={[0, 0.04, 0.15]}
+                position={[0, 0.05, 0.15]}
                 rotation={[0,0,0]}
                 scale={0.15}
                 // render logo
@@ -175,10 +175,42 @@ const Shirt = ({angle, setIsAnimating, isAnimating, canvasRef }) => {
                 depthTest={true}
                 depthWrite={true}
                 ref={decalRef}
-                userData={{draggable: true}}
+                // userData={{draggable: true}}
               />
             )}
-            {!snap.isLogoTexture && showText && snap.textValue !== ' ' && (
+            {snap.isLogoTexture && snap.position.right && (
+              <Decal
+                position={[0.1, 0.2, 0.15]}
+                rotation={[0,0,0]}
+                scale={0.15}
+                // render logo
+                map={logoTexture}
+                // change the quality of texture
+                map-anisotropy={16}
+                // insure to render on top of the other objects in the scene
+                depthTest={true}
+                depthWrite={true}
+                ref={decalRef}
+                // userData={{draggable: true}}
+              />
+            )}
+            {snap.isLogoTexture && snap.position.left && (
+              <Decal
+                position={[-0.1, 0.2, 0.15]}
+                rotation={[0,0,0]}
+                scale={0.15}
+                // render logo
+                map={logoTexture}
+                // change the quality of texture
+                map-anisotropy={16}
+                // insure to render on top of the other objects in the scene
+                depthTest={true}
+                depthWrite={true}
+                ref={decalRef}
+                // userData={{draggable: true}}
+              />
+            )}
+            {/* {!snap.isLogoTexture && showText && snap.textValue !== ' ' && (
               <Decal
                 position={[0,0,0.17]}
                 rotation={[0, 0, 0]}
@@ -192,7 +224,7 @@ const Shirt = ({angle, setIsAnimating, isAnimating, canvasRef }) => {
                   )}
                 />
               </Decal>
-            )}
+            )} */}
         </mesh>
       </group>
   )

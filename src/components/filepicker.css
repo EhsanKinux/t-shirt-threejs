@@ -93,6 +93,7 @@
 
 .logoTextureShow{
     display: flex;
+    cursor: pointer;
 }
 
 .logoBtn {

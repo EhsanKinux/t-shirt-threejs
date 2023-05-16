@@ -9,7 +9,7 @@ const state = proxy({
     intro: true,
     //default color
     color: {
-        value: '#FF7495',
+        value: '#25bb92',
     },
     // default background color
     bgColor: {
@@ -27,6 +27,12 @@ const state = proxy({
     isFront: true,
     // new property to store the text entered by the user
     textValue:' ',
+    // logo positions
+    position: {
+        left: false,
+        middle: true,
+        right: false
+    }
 })
 
 export default state;
