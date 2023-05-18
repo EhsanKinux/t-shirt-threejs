@@ -1,16 +1,16 @@
 import React, { useState } from 'react'
-import CustomButton from './CustomButton'
+// import CustomButton from './CustomButton'
 
 //styles
 import "./filepicker.css"
 import { DecalTypes, FilterPosition} from '../config/constants';
 // import Tab from './Tab';
-import { reader } from '../config/helpers';
+import { getContrastingColor, reader } from '../config/helpers';
 import state from '../store';
 import { useSnapshot } from 'valtio';
 import SwitchLogo from './SwitchLogo';
 
-const FilePicker = ({file, setFile, setActiveEditorTab}) => {
+const FilePicker = ({file, setFile, setActiveEditorTab, showFront}) => {
 
   const snap = useSnapshot(state);
   
@@ -103,7 +103,7 @@ const FilePicker = ({file, setFile, setActiveEditorTab}) => {
           onChange={(e) => setFile(e.target.files[0])}
           className='input'
         />
-        <label htmlFor='file-upload' className='filepicker-lable' style={{backgroundColor: snap.color.value}}>
+        <label htmlFor='file-upload' className='filepicker-lable' style={{backgroundColor: snap.color.value, color: getContrastingColor(snap.color.value)}}>
           Upload Your File
         </label>
 
@@ -113,36 +113,36 @@ const FilePicker = ({file, setFile, setActiveEditorTab}) => {
       </div>
 
       <div className='buttonWrapper'>
-        <div className='logoOrTextureBtn'>
+        {/* <div className='logoOrTextureBtn'>
           <CustomButton
             type="outline"
             title="Click to set logo"
             handleClick={() => readFile('logo')}
             className="logoBtn"
           />
-          {/* <CustomButton
+          <CustomButton
             type="filled"
             title="Full"
             handleClick={() => readFile('full')}
             className="fullBtn"
-          /> */}
+          />
 
-        </div>
-        <div className='logoPositionWrapper'>
+        </div> */}
+        {showFront ? <div className='logoPositionWrapper'>
           {FilterPosition.map((pos) => (
             <SwitchLogo
               key={pos.name}
               pos={pos}
-              handleClick={() => handleLogoPosition(pos.name)}
+              handleClick={() => {handleLogoPosition(pos.name); readFile('logo')}}
             />
           ))}
-        </div>
+        </div> : <span style={{color: snap.color.value}}>The logo is set to the back</span> }
         <label className='switch'>
           <input 
             type="checkbox" 
             defaultChecked={checked}
             onChange={() => setChecked(!checked)}
-            onClick={() => handleActiveFilterTab("logoShirt")}
+            onClick={() => {handleActiveFilterTab("logoShirt")}}
           />
           <span className="slider"></span>
           {/* {FilterTabs.map((tab) => (

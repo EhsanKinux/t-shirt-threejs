@@ -50,6 +50,7 @@ const Customizer = ({ onButtonClick, canvasRef, startAnimation, angle, setShowFr
             file={file}
             setFile={setFile}
             setActiveEditorTab={setActiveEditorTab}
+            showFront={showFront}
           />
         );
       case "aipicker":
@@ -64,7 +65,7 @@ const Customizer = ({ onButtonClick, canvasRef, startAnimation, angle, setShowFr
       default:
         return null;
     }
-  }, [activeEditorTab, file, prompt]);
+  }, [activeEditorTab, file, prompt, showFront]);
   //ai submit
   // const handleSumbmit = async (type) => {
   //   if(!prompt) return alert("Please enter a prompt");
@@ -214,7 +215,10 @@ const Customizer = ({ onButtonClick, canvasRef, startAnimation, angle, setShowFr
                 style: { cursor: "pointer" },
               }}
             >
-              <BsCamera onClick={handleScreenshotClick} />
+              <BsCamera 
+                onClick={handleScreenshotClick} 
+                title="ScreenShot"
+              />
             </IconContext.Provider>
 
             {/* recording */}
@@ -226,6 +230,7 @@ const Customizer = ({ onButtonClick, canvasRef, startAnimation, angle, setShowFr
               }}
             >
               <BsCameraVideo
+                title="Recording"
                 onClick={() => {
                   startRecording();
                   startAnimation();
