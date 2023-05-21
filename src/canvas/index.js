@@ -42,8 +42,8 @@ const CanvasModel = () => {
   function startAnimation() {
     setIsAnimating(true);
   }
-
   
+  const decalRef = useRef(null);
 
   return (
     <div className="canvasWrapper" style={{backgroundColor: getContrastingColor(snap.color.value)}}>
@@ -68,14 +68,14 @@ const CanvasModel = () => {
 
           <Center>
             <Suspense fallback={Loading}>
-              <Shirt angle={angle} setIsAnimating={setIsAnimating} isAnimating={isAnimating} canvasRef={canvasRef} showFront={showFront} setLogoPosition/>
+              <Shirt angle={angle} setIsAnimating={setIsAnimating} isAnimating={isAnimating} canvasRef={canvasRef} showFront={showFront} setLogoPosition decalRef={decalRef}/>
             </Suspense>
           </Center>
 
         </CameraRig>
       </Canvas>
       {/* Only show the customizer after the canvas has loaded */}
-      {isCanvasLoaded && <Customizer onButtonClick={handleButtonClick} canvasRef={canvasRef} startAnimation={startAnimation} angle={angle} setShowFront={setShowFront} showFront={showFront} />}
+      {isCanvasLoaded && <Customizer onButtonClick={handleButtonClick} canvasRef={canvasRef} startAnimation={startAnimation} angle={angle} setShowFront={setShowFront} showFront={showFront} decalRef={decalRef} />}
       {/* {isCanvasLoaded && <Server canvasRef={canvasRef}/>} */}
     </div>
   )

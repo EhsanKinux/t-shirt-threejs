@@ -15,12 +15,12 @@ import TextPicker from "../components/TextPicker";
 import { IconContext } from "react-icons";
 import { BsCamera, BsCameraVideo } from "react-icons/bs";
 // import { BsTextareaT } from "react-icons/bs";
-import { BiRotateRight } from "react-icons/bi";
+import { TbRotateDot } from "react-icons/tb";
 import { MdColorLens, MdFlipCameraAndroid } from "react-icons/md";
 // import { BsRobot } from "react-icons/bs";
 import { AiFillFileImage } from "react-icons/ai";
 
-const Customizer = ({ onButtonClick, canvasRef, startAnimation, angle, setShowFront, showFront }) => {
+const Customizer = ({ onButtonClick, canvasRef, startAnimation, angle, setShowFront, showFront, decalRef }) => {
   const snap = useSnapshot(state);
 
   const [file, setFile] = useState("");
@@ -51,6 +51,7 @@ const Customizer = ({ onButtonClick, canvasRef, startAnimation, angle, setShowFr
             setFile={setFile}
             setActiveEditorTab={setActiveEditorTab}
             showFront={showFront}
+            decalRef={decalRef}
           />
         );
       case "aipicker":
@@ -65,7 +66,7 @@ const Customizer = ({ onButtonClick, canvasRef, startAnimation, angle, setShowFr
       default:
         return null;
     }
-  }, [activeEditorTab, file, prompt, showFront]);
+  }, [activeEditorTab, file, prompt, showFront, decalRef]);
   //ai submit
   // const handleSumbmit = async (type) => {
   //   if(!prompt) return alert("Please enter a prompt");
@@ -247,7 +248,7 @@ const Customizer = ({ onButtonClick, canvasRef, startAnimation, angle, setShowFr
                 style: { cursor: "pointer" },
               }}
             >
-              <BiRotateRight
+              <TbRotateDot
                 type="outline"
                 title="Animation"
                 onClick={startAnimation}

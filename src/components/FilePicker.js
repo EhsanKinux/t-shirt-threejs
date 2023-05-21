@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-// import CustomButton from './CustomButton'
+import CustomButton from './CustomButton'
 
 //styles
 import "./filepicker.css"
@@ -10,7 +10,7 @@ import state from '../store';
 import { useSnapshot } from 'valtio';
 import SwitchLogo from './SwitchLogo';
 
-const FilePicker = ({file, setFile, setActiveEditorTab, showFront}) => {
+const FilePicker = ({file, setFile, setActiveEditorTab, showFront, decalRef}) => {
 
   const snap = useSnapshot(state);
   
@@ -19,18 +19,29 @@ const FilePicker = ({file, setFile, setActiveEditorTab, showFront}) => {
     stylishShirt:false,
   });
   
-  const [checked, setChecked] = React.useState(true);
+  // const [checked, setChecked] = React.useState(true);
   
   const handleDecals = (type, result) => {
     const decalType = DecalTypes[type];
-    //update state
-    state[decalType.stateProperty] = result;
-
-    //that decal is currently active
-    if(!activeFilterTab[decalType.filterTab]) {
-      handleActiveFilterTab(decalType.filterTab)
+  
+    if (type === 'deleteLogo') {
+      // Remove the decal from the scene
+      if (decalRef.current) {
+        decalRef.current.remove();
+      }
+    } else {
+      // Update state with the new logo texture
+      state[decalType.stateProperty] = result;
+  
+      //that decal is currently active
+      if(!activeFilterTab[decalType.filterTab]) {
+        handleActiveFilterTab(decalType.filterTab)
+      }
     }
-  }
+  };
+  
+  
+  
 
     //to keep in mind are we currently showing the logo or texture or both
     const handleActiveFilterTab = (tabName) => {
@@ -57,11 +68,12 @@ const FilePicker = ({file, setFile, setActiveEditorTab, showFront}) => {
     }
     //get file Data:
     const readFile = (type) => {
-      reader(file).then((result) => {
-        handleDecals(type, result);
-        setActiveEditorTab("");
-      }) 
+        reader(file).then((result) => {
+          handleDecals(type, result);
+          setActiveEditorTab("");
+        })
     }
+    
 
     const handleLogoPosition = (posName) => {
       // create a copy of the current position object
@@ -107,7 +119,10 @@ const FilePicker = ({file, setFile, setActiveEditorTab, showFront}) => {
           Upload Your File
         </label>
 
-        <span className='filepicker-paragraph'>
+        <span 
+          className='filepicker-paragraph' 
+          style={{color: getContrastingColor(snap.color.value) === "#1e1e1e" ? "#fafbf4" : "#1e1e1e"}}
+        >
           {file ==='' ? "No file selected" : file.name }
         </span>
       </div>
@@ -128,7 +143,7 @@ const FilePicker = ({file, setFile, setActiveEditorTab, showFront}) => {
           />
 
         </div> */}
-        {showFront ? <div className='logoPositionWrapper'>
+        {showFront ? <div className='logoPositionWrapper' style={{backgroundColor: getContrastingColor(snap.color.value) === "#FAFBF4" ? snap.color.value : "none"}}>
           {FilterPosition.map((pos) => (
             <SwitchLogo
               key={pos.name}
@@ -136,26 +151,34 @@ const FilePicker = ({file, setFile, setActiveEditorTab, showFront}) => {
               handleClick={() => {handleLogoPosition(pos.name); readFile('logo')}}
             />
           ))}
-        </div> : <span style={{color: snap.color.value}}>The logo is set to the back</span> }
-        <label className='switch'>
-          <input 
-            type="checkbox" 
-            defaultChecked={checked}
-            onChange={() => setChecked(!checked)}
-            onClick={() => {handleActiveFilterTab("logoShirt")}}
+        </div> : <span 
+                    style={{color: snap.color.value}}
+                  >
+                    The logo is set to the back
+                  </span> }
+        
+        <div>
+          <CustomButton
+            type="outline"
+            title="Delete Logo"
+            handleClick={() => readFile('deleteLogo')}
+            className="logoBtn"
           />
-          <span className="slider"></span>
-          {/* {FilterTabs.map((tab) => (
-            <Tab
-              key={tab.name}
-              tab={tab}
-              isfilterTab
-              isActiveTab={activeFilterTab[tab.name]}
-              handleClick={() => handleActiveFilterTab(tab.name)}
-            />
-          ))} */}
+        </div>
 
-        </label>
+        {/* <div className='filterWrapper'>
+          <span className='hidetext' style={{color: snap.color.value}}>Hide</span>
+          <label className='switch'>
+            <input 
+              type="checkbox" 
+              defaultChecked={checked}
+              onChange={() => setChecked(!checked)}
+              onClick={() => {handleActiveFilterTab("logoShirt")}}
+            />
+            <span className="slider"></span>
+          </label>
+          <span style={{color: snap.color.value}}>Show</span>
+        </div> */}
 
       </div>
 

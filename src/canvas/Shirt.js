@@ -8,14 +8,15 @@ import * as THREE from 'three';
 
 import state from '../store';
 
-const Shirt = ({angle, setIsAnimating, isAnimating, canvasRef, showFront }) => {
+const Shirt = ({angle, setIsAnimating, isAnimating, canvasRef, showFront, decalRef }) => {
   const snap = useSnapshot(state);
   const { nodes, materials } = useGLTF('/tshirt.glb');
   const shirtRef = useRef();
-  const decalRef = useRef();
+  
 
   //textur to apply to tshirt
-  const logoTexture = useTexture(snap.logoDecal);
+    // handle logo texture
+    const logoTexture = useTexture(snap.logoDecal || '');
   // const fullTextur = useTexture(snap.fullDecal);
   
   // to apply the color smoothly
@@ -28,7 +29,7 @@ const Shirt = ({angle, setIsAnimating, isAnimating, canvasRef, showFront }) => {
   // use state to keep track of front/back placement
   // const [showText, setShowText] = useState(snap.isFront);
 
-  const [logoPosition, setLogoPosition] = useState([0, 0.05, 0.15]);
+  const [logoPosition, setLogoPosition] = useState([0, 0.08, 0.15]);
   const [rotation, setRotation] = useState([0,0,0]);
 
   ////////////////////////show back and front/////////////////////////////
@@ -80,13 +81,13 @@ const Shirt = ({angle, setIsAnimating, isAnimating, canvasRef, showFront }) => {
 useEffect(() => {
       //update logo position based on front/back placement
       if (!showFront) {
-        setLogoPosition([0, 0.05, -0.15]);
+        setLogoPosition([0.02, 0.08, -0.15]);
         setRotation([0,3.5,0]);
       } else {
-        setLogoPosition([0, 0.05, 0.15]);
+        setLogoPosition([-0.01, 0.08, 0.15]);
         setRotation([0,0,0]);
       }
-}, [ showFront, snap.isLogoTexture])
+}, [ showFront, snap.isLogoTexture, snap.color.value])
   /////////////////////text control/////////////////////////
 
   // const createTextCanvas = (text, textColor) => {
@@ -174,11 +175,11 @@ useEffect(() => {
             />
           )} */}
             {/* showing the logo */}
-            {snap.isLogoTexture && snap.position.middle && (
+            {snap.isLogoTexture && snap.position.middle && snap.logoDecal && (
               <Decal
                 position={logoPosition}
                 rotation={rotation}
-                scale={0.15}
+                scale={0.2}
                 // render logo
                 map={logoTexture}
                 // change the quality of texture
@@ -190,7 +191,7 @@ useEffect(() => {
                 // userData={{draggable: true}}
               />
             )}
-            {snap.isLogoTexture && snap.position.right && (
+            {snap.isLogoTexture && snap.position.right && snap.logoDecal && (
               <Decal
                 position={[0.1, 0.2, 0.15]}
                 rotation={[0,0,0]}
@@ -206,9 +207,9 @@ useEffect(() => {
                 // userData={{draggable: true}}
               />
             )}
-            {snap.isLogoTexture && snap.position.left && (
+            {snap.isLogoTexture && snap.position.left && snap.logoDecal && (
               <Decal
-                position={[-0.1, 0.2, 0.15]}
+                position={[-0.15, 0.2, 0.15]}
                 rotation={[0,0,0]}
                 scale={0.15}
                 // render logo
