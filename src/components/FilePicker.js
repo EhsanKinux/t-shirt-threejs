@@ -9,6 +9,8 @@ import { getContrastingColor, reader } from '../config/helpers';
 import state from '../store';
 import { useSnapshot } from 'valtio';
 import SwitchLogo from './SwitchLogo';
+// import * as THREE from 'three';
+// import { logoShirt } from '../assets';
 
 const FilePicker = ({file, setFile, setActiveEditorTab, showFront, decalRef}) => {
 
@@ -23,13 +25,7 @@ const FilePicker = ({file, setFile, setActiveEditorTab, showFront, decalRef}) =>
   
   const handleDecals = (type, result) => {
     const decalType = DecalTypes[type];
-  
-    if (type === 'deleteLogo') {
-      // Remove the decal from the scene
-      if (decalRef.current) {
-        decalRef.current.remove();
-      }
-    } else {
+
       // Update state with the new logo texture
       state[decalType.stateProperty] = result;
   
@@ -37,7 +33,6 @@ const FilePicker = ({file, setFile, setActiveEditorTab, showFront, decalRef}) =>
       if(!activeFilterTab[decalType.filterTab]) {
         handleActiveFilterTab(decalType.filterTab)
       }
-    }
   };
   
   
@@ -72,6 +67,14 @@ const FilePicker = ({file, setFile, setActiveEditorTab, showFront, decalRef}) =>
           handleDecals(type, result);
           setActiveEditorTab("");
         })
+    }
+
+    // delete logo decal
+    // const scene = new THREE.Scene();
+    const deleteDecal = () => {
+      // scene.remove(logoShirt);
+      const parent = decalRef.current.parent;
+      parent && parent.remove(decalRef.current);
     }
     
 
@@ -161,7 +164,7 @@ const FilePicker = ({file, setFile, setActiveEditorTab, showFront, decalRef}) =>
           <CustomButton
             type="outline"
             title="Delete Logo"
-            handleClick={() => readFile('deleteLogo')}
+            handleClick={() => deleteDecal()}
             className="logoBtn"
           />
         </div>
