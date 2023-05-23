@@ -37,6 +37,9 @@ const Customizer = ({ onButtonClick, canvasRef, startAnimation, angle, setShowFr
   //keep track of whether or not the screenshot button has been clicked
   const [isScreenshotClicked, setIsScreenshotClicked] = useState(false);
 
+  // keep track of whether or not the logo decal exist
+  const [decalExists, setDecalExists] = useState(true);
+
   //show the app content depending on the activeTab
   const generateTabContent = useCallback(() => {
     switch (activeEditorTab) {
@@ -52,6 +55,7 @@ const Customizer = ({ onButtonClick, canvasRef, startAnimation, angle, setShowFr
             setActiveEditorTab={setActiveEditorTab}
             showFront={showFront}
             decalRef={decalRef}
+            setDecalExists={setDecalExists}
           />
         );
       case "aipicker":
@@ -268,9 +272,13 @@ const Customizer = ({ onButtonClick, canvasRef, startAnimation, angle, setShowFr
                 type="outline"
                 title="Rotate"
                 onClick={() => {
-                            onButtonClick(angle ? 0 : Math.PI);
-                            setShowFront (!showFront); // toggle state variable here
-                        }}
+                  if (decalExists) {
+                    onButtonClick(angle ? 0 : Math.PI);
+                    setShowFront(!showFront);
+                  } else {
+                    onButtonClick(angle ? 0 : Math.PI);
+                  }
+                }}
                 style={{ color: snap.color.value }}
               />
             </IconContext.Provider>

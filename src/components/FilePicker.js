@@ -9,10 +9,8 @@ import { getContrastingColor, reader } from '../config/helpers';
 import state from '../store';
 import { useSnapshot } from 'valtio';
 import SwitchLogo from './SwitchLogo';
-// import * as THREE from 'three';
-// import { logoShirt } from '../assets';
 
-const FilePicker = ({file, setFile, setActiveEditorTab, showFront, decalRef}) => {
+const FilePicker = ({file, setFile, setActiveEditorTab, showFront, decalRef, setDecalExists}) => {
 
   const snap = useSnapshot(state);
   
@@ -70,11 +68,10 @@ const FilePicker = ({file, setFile, setActiveEditorTab, showFront, decalRef}) =>
     }
 
     // delete logo decal
-    // const scene = new THREE.Scene();
     const deleteDecal = () => {
-      // scene.remove(logoShirt);
       const parent = decalRef.current.parent;
       parent && parent.remove(decalRef.current);
+      setDecalExists(false);
     }
     
 
