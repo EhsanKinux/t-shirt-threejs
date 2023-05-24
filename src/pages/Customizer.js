@@ -115,9 +115,9 @@ const Customizer = ({ onButtonClick, canvasRef, startAnimation, angle, setShowFr
     const stream = canvasRef.current.captureStream();
     const recorder = RecordRTC(stream, {
       type: "video",
-      mimeType: "video/webm",
-      bitsPerSecond: 128000,
-      timeSlice: 4000,
+      mimeType: "video/mp4",
+      bitsPerSecond: 40000000, // 10 Mbps
+      timeSlice: 6000,
     });
     recorder.startRecording();
     setTimeout(() => {
@@ -125,10 +125,10 @@ const Customizer = ({ onButtonClick, canvasRef, startAnimation, angle, setShowFr
         const blob = recorder.getBlob();
         const tempAnchor = document.createElement("a");
         tempAnchor.href = URL.createObjectURL(blob);
-        tempAnchor.download = "recording.webm";
+        tempAnchor.download = "recording.mp4";
         tempAnchor.click();
       });
-    }, 4700);
+    }, 5000);
   };
 
   return (
