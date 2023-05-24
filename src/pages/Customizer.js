@@ -16,9 +16,11 @@ import { IconContext } from "react-icons";
 import { BsCamera, BsCameraVideo } from "react-icons/bs";
 // import { BsTextareaT } from "react-icons/bs";
 import { TbRotateDot } from "react-icons/tb";
-import { MdColorLens, MdFlipCameraAndroid } from "react-icons/md";
+import { MdColorLens } from "react-icons/md";
+import { RiBringToFront, RiSendToBack } from "react-icons/ri";
 // import { BsRobot } from "react-icons/bs";
 import { AiFillFileImage } from "react-icons/ai";
+// import { logoShirt } from "../assets";
 
 const Customizer = ({ onButtonClick, canvasRef, startAnimation, angle, setShowFront, showFront, decalRef }) => {
   const snap = useSnapshot(state);
@@ -268,15 +270,37 @@ const Customizer = ({ onButtonClick, canvasRef, startAnimation, angle, setShowFr
                 style: { cursor: "pointer" },
               }}
             >
-              <MdFlipCameraAndroid
+              <RiBringToFront
                 type="outline"
-                title="Rotate"
+                title="Rotate to Front"
                 onClick={() => {
                   if (decalExists) {
-                    onButtonClick(angle ? 0 : Math.PI);
-                    setShowFront(!showFront);
+                    onButtonClick(0);
+                    setShowFront(true);
                   } else {
-                    onButtonClick(angle ? 0 : Math.PI);
+                    onButtonClick(0);
+                  }
+                }}
+                style={{ color: snap.color.value }}
+              />
+            </IconContext.Provider>
+
+            <IconContext.Provider
+              value={{
+                color: snap.color.value,
+                size: "2rem",
+                style: { cursor: "pointer" },
+              }}
+            >
+              <RiSendToBack
+                type="outline"
+                title="Rotate to Back"
+                onClick={() => {
+                  if (decalExists) {
+                    onButtonClick(Math.PI);
+                    setShowFront(false);
+                  } else {
+                    onButtonClick(Math.PI);
                   }
                 }}
                 style={{ color: snap.color.value }}
