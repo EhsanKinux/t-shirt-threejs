@@ -2,7 +2,7 @@ import "./canvas.css"
 //
 import { Canvas } from "@react-three/fiber"
 import { Center, Environment } from "@react-three/drei"
-import { Suspense, useEffect, useRef, useState } from "react";
+import { Suspense, useRef, useState } from "react";
 import { useSnapshot } from "valtio";
 //
 import { getContrastingColor } from "config/helpers";
