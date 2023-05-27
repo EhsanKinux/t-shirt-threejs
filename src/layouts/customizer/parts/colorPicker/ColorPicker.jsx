@@ -1,10 +1,9 @@
 import React from 'react';
 import { CirclePicker } from 'react-color';
 import { useSnapshot } from 'valtio';
-
 //styles
 import './colorpicker.css'
-import state from '../store';
+import state from '../../../../store';
 
 const ColorPicker = () => {
   const snap = useSnapshot(state);

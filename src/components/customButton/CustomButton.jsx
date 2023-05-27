@@ -1,9 +1,9 @@
 //style
 import "./customButton.css";
 
-import state from "../store";
+import state from "../../store";
 import { useSnapshot } from "valtio";
-import { getContrastingColor } from "../config/helpers";
+import { getContrastingColor } from "config/helpers";
 
 const CustomButton = ({ type, title, customStyles, handleClick }) => {
   const snap = useSnapshot(state);

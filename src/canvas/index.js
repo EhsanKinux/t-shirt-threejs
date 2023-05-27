@@ -1,49 +1,42 @@
+import "./index.css"
+//
 import { Canvas } from "@react-three/fiber"
 import { Center, Environment } from "@react-three/drei"
-// import BackDropColor from "./BackDropColor";
+import { Suspense, useEffect, useRef, useState } from "react";
+import { useSnapshot } from "valtio";
+//
+import { getContrastingColor } from "../config/helpers";
 import Shirt from "./Shirt";
 import CameraRig from "./CameraRig";
-import { Suspense, useEffect, useRef, useState } from "react";
-import Customizer from "../pages/Customizer";
-
-//styles
-import "./index.css"
-import Loading from "../components/Loading";
-import { getContrastingColor } from "../config/helpers";
-import { useSnapshot } from "valtio";
+import Loading from "components/loading/Loading";
+import Customizer from "../layouts/customizer/Customizer";
 import state from "../store";
-// import Server from "../server/Server";
+
 
 
 const CanvasModel = () => {
 
   const snap = useSnapshot(state)
+  const canvasRef = useRef();
+  const decalRef = useRef(null);
 
   //state to keep track of logo decal position
   const [showFront, setShowFront] = useState(true);
-
   // rotation of front and back of the product
   const [angle, setAngle] = useState(0);
+  const [isCanvasLoaded, setIsCanvasLoaded] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
+
   function handleButtonClick(newAngle) {
     setAngle(newAngle);
   }
 
-  const [isAnimating, setIsAnimating] = useState(false);
-
-  
-  // the useRef hook creates a reference to the canvas element and then use the onCreated property of the Canvas component to wait for the canvas to be created before setting the reference to it
-  const canvasRef = useRef();
-  const [isCanvasLoaded, setIsCanvasLoaded] = useState(false);
-
-  useEffect(() => {
-    if (canvasRef.current) setIsCanvasLoaded(true);
-  }, [canvasRef]);
-  
   function startAnimation() {
     setIsAnimating(true);
   }
-  
-  const decalRef = useRef(null);
+
+  // the useRef hook creates a reference to the canvas element and then use the onCreated property of the Canvas component to wait for the canvas to be created before setting the reference to it
+
 
   return (
     <div className="canvasWrapper" style={{backgroundColor: getContrastingColor(snap.color.value)}}>
@@ -63,7 +56,6 @@ const CanvasModel = () => {
       >
         <ambientLight intensity={0.35}/>
         <Environment preset="city"/>
-        {/* <BackDropColor/> */}
         <CameraRig>
 
           <Center>
@@ -75,8 +67,7 @@ const CanvasModel = () => {
         </CameraRig>
       </Canvas>
       {/* Only show the customizer after the canvas has loaded */}
-      {isCanvasLoaded && <Customizer onButtonClick={handleButtonClick} canvasRef={canvasRef} startAnimation={startAnimation} angle={angle} setShowFront={setShowFront} showFront={showFront} decalRef={decalRef} />}
-      {/* {isCanvasLoaded && <Server canvasRef={canvasRef}/>} */}
+      {(isCanvasLoaded && canvasRef.current) && <Customizer onButtonClick={handleButtonClick} canvasRef={canvasRef} startAnimation={startAnimation} angle={angle} setShowFront={setShowFront} showFront={showFront} decalRef={decalRef} />}
     </div>
   )
 }

@@ -1,6 +1,6 @@
 
 import Canvas from './canvas';
-// import Customizer from './pages/Customizer';
+import TestComponent from './Test';
 
 
 //style
@@ -11,9 +11,7 @@ function App() {
   return (
     <div className="App">
         <Canvas className="canvas" />
-
-      {/* <Home/> */}
-      {/* <Customizer  /> */}
+        <TestComponent />
     </div>
   );
 }
