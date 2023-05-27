@@ -1,19 +1,14 @@
 
-import Canvas from './canvas';
-// import Customizer from './pages/Customizer';
-
+import CanvasLayout from "layouts/canvas/canvas";
 
 //style
-import './App.css';
+import "./App.css";
 
 function App() {
-
   return (
     <div className="App">
-        <Canvas className="canvas" />
-
-      {/* <Home/> */}
-      {/* <Customizer  /> */}
+      <CanvasLayout />
+      {/* <Canvas className="canvas" /> */}
     </div>
   );
 }

@@ -6,11 +6,11 @@ import { useFrame } from '@react-three/fiber';
 import { Decal, useGLTF, useTexture } from '@react-three/drei';
 import * as THREE from 'three';
 
-import state from '../store';
+import state from '../../store';
 
-const Shirt = ({angle, setIsAnimating, isAnimating, canvasRef, showFront, decalRef }) => {
+const Shirt = ({angle, setIsAnimating, isAnimating, canvasRef, showFront, decalRef  , modelURl}) => {
   const snap = useSnapshot(state);
-  const { nodes, materials } = useGLTF('/tshirt.glb');
+  const { nodes, materials } = useGLTF(modelURl);
   const shirtRef = useRef();
   
 

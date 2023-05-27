@@ -1,44 +1,41 @@
+import "./customizer.css";
 import { useCallback, useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useSnapshot } from "valtio";
-import state from "../store";
-import { slideAnimation } from "../config/motion";
-import {
-  AIPicker,
-  ColorPicker,
-  FilePicker,
-} from "../components";
-import RecordRTC from "recordrtc";
-//styles
-import "./customizer.css";
-import TextPicker from "../components/TextPicker";
 import { IconContext } from "react-icons";
 import { BsCamera, BsCameraVideo } from "react-icons/bs";
-// import { BsTextareaT } from "react-icons/bs";
 import { TbRotateDot } from "react-icons/tb";
 import { MdColorLens } from "react-icons/md";
 import { RiBringToFront, RiSendToBack } from "react-icons/ri";
-// import { BsRobot } from "react-icons/bs";
 import { AiFillFileImage } from "react-icons/ai";
-// import { logoShirt } from "../assets";
+import RecordRTC from "recordrtc";
+//
+import state from "../../store";
+import { slideAnimation } from "config/motion";
+import ColorPicker from "./parts/colorPicker/ColorPicker";
+import FilePicker from "./parts/filePicker/FilePicker";
+import TextPicker from "./parts/textPicker/TextPicker";
+import AIPicker from "./parts/aipPicker/AIPicker";
 
-const Customizer = ({ onButtonClick, canvasRef, startAnimation, angle, setShowFront, showFront, decalRef }) => {
+
+const Customizer = ({
+  onButtonClick,
+  canvasRef,
+  startAnimation,
+  angle,
+  setShowFront,
+  showFront,
+  decalRef,
+}) => {
   const snap = useSnapshot(state);
 
   const [file, setFile] = useState("");
-
   //AI prompt
   const [prompt, setPrompt] = useState("");
-
-  //are we currently generating the image or not
-  // const [generatingImg, setGeneratingImg] = useState(false);
-
   //are we currently showing the logo or fulltexture
   const [activeEditorTab, setActiveEditorTab] = useState("");
-
   //keep track of whether or not the screenshot button has been clicked
   const [isScreenshotClicked, setIsScreenshotClicked] = useState(false);
-
   // keep track of whether or not the logo decal exist
   const [decalExists, setDecalExists] = useState(true);
 
@@ -73,20 +70,6 @@ const Customizer = ({ onButtonClick, canvasRef, startAnimation, angle, setShowFr
         return null;
     }
   }, [activeEditorTab, file, prompt, showFront, decalRef]);
-  //ai submit
-  // const handleSumbmit = async (type) => {
-  //   if(!prompt) return alert("Please enter a prompt");
-
-  //   try {
-  //     //call our backend to generate an ai image:
-
-  //   } catch (error) {
-  //     alert(error)
-  //   } finally {
-  //     setGeneratingImg(false);
-  //     setActiveEditorTab("");
-  //   }
-  // }
 
   //screenShot
   const handleScreenshotClick = () => {
@@ -208,12 +191,8 @@ const Customizer = ({ onButtonClick, canvasRef, startAnimation, angle, setShowFr
             <div className="sidebarContent">{generateTabContent()}</div>
           </motion.div>
 
-
           {/* buttons to export screenshot and recording and animation */}
-          <motion.div 
-            className="exportWrapper"
-            {...slideAnimation("right")}
-          >
+          <motion.div className="exportWrapper" {...slideAnimation("right")}>
             {/* screenshot */}
             <IconContext.Provider
               value={{
@@ -222,10 +201,7 @@ const Customizer = ({ onButtonClick, canvasRef, startAnimation, angle, setShowFr
                 style: { cursor: "pointer" },
               }}
             >
-              <BsCamera 
-                onClick={handleScreenshotClick} 
-                title="ScreenShot"
-              />
+              <BsCamera onClick={handleScreenshotClick} title="ScreenShot" />
             </IconContext.Provider>
 
             {/* recording */}
@@ -261,7 +237,7 @@ const Customizer = ({ onButtonClick, canvasRef, startAnimation, angle, setShowFr
                 style={{ color: snap.color.value }}
               />
             </IconContext.Provider>
-            
+
             {/* buttons to toggle between the front and back of the shirt */}
             <IconContext.Provider
               value={{
