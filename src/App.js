@@ -1,17 +1,14 @@
 
-import Canvas from './canvas';
-import TestComponent from './Test';
-
+import CanvasLayout from "layouts/canvas/canvas";
 
 //style
-import './App.css';
+import "./App.css";
 
 function App() {
-
   return (
     <div className="App">
-        <Canvas className="canvas" />
-        <TestComponent />
+      <CanvasLayout />
+      {/* <Canvas className="canvas" /> */}
     </div>
   );
 }

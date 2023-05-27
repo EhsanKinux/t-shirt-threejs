@@ -1,20 +1,21 @@
-import "./index.css"
+import "./canvas.css"
 //
 import { Canvas } from "@react-three/fiber"
 import { Center, Environment } from "@react-three/drei"
 import { Suspense, useEffect, useRef, useState } from "react";
 import { useSnapshot } from "valtio";
 //
-import { getContrastingColor } from "../config/helpers";
-import Shirt from "./Shirt";
-import CameraRig from "./CameraRig";
+import { getContrastingColor } from "config/helpers";
+//import Shirt from "./Shirt";
+import CameraRig from "./parts/cameraRig/CameraRig";
 import Loading from "components/loading/Loading";
-import Customizer from "../layouts/customizer/Customizer";
-import state from "../store";
+import Customizer from "layouts/customizer/Customizer";
+import state from "../../store";
+import Models from "layouts/models/Models";
 
 
 
-const CanvasModel = () => {
+const CanvasLayout = () => {
 
   const snap = useSnapshot(state)
   const canvasRef = useRef();
@@ -60,7 +61,7 @@ const CanvasModel = () => {
 
           <Center>
             <Suspense fallback={Loading}>
-              <Shirt angle={angle} setIsAnimating={setIsAnimating} isAnimating={isAnimating} canvasRef={canvasRef} showFront={showFront} setLogoPosition decalRef={decalRef}/>
+              <Models angle={angle} setIsAnimating={setIsAnimating} isAnimating={isAnimating} canvasRef={canvasRef} showFront={showFront} setLogoPosition decalRef={decalRef}/>
             </Suspense>
           </Center>
 
@@ -72,4 +73,4 @@ const CanvasModel = () => {
   )
 }
 
-export default CanvasModel
+export default CanvasLayout
