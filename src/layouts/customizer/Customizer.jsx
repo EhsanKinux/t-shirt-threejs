@@ -16,9 +16,9 @@ import ColorPicker from "./parts/colorPicker/ColorPicker";
 import FilePicker from "./parts/filePicker/FilePicker";
 import TextPicker from "./parts/textPicker/TextPicker";
 import AIPicker from "./parts/aipPicker/AIPicker";
+import CreateButton from "./parts/createButton/CreateButton";
 import { BASE_URL } from "config/constants";
 import axios from "axios";
-
 
 const Customizer = ({
   onButtonClick,
@@ -125,15 +125,24 @@ const Customizer = ({
     formData.append("screenshot", screenshotDataURL);
     formData.append("decalFile", file);
 
-    try {
-      const response = await axios.post(`${BASE_URL}/3d`, formData);
-      if(response.status === 200) {
-        console.log('Successful response');
-      }
-    } catch (error) {
-      console.error(error);
-    }
+    // try {
+    //   const response = await axios.post(`${BASE_URL}/3d`, formData);
+    //   if(response.status === 200) {
+    //     console.log('Successful response');
+    //   }
+    // } catch (error) {
+    //   console.error(error);
+    // }
   };
+
+  const ClickOnRotateToBack = () => {
+    if (decalExists) {
+      onButtonClick(Math.PI);
+      setShowFront(false);
+    } else {
+      onButtonClick(Math.PI);
+    }
+  }
 
   return (
     <div className="customizerWrapper">
@@ -292,27 +301,15 @@ const Customizer = ({
               <RiSendToBack
                 type="outline"
                 title="Rotate to Back"
-                onClick={() => {
-                  if (decalExists) {
-                    onButtonClick(Math.PI);
-                    setShowFront(false);
-                  } else {
-                    onButtonClick(Math.PI);
-                  }
-                }}
+                onClick={ClickOnRotateToBack}
                 style={{ color: snap.color.value }}
               />
             </IconContext.Provider>
             {/* create api */}
-            <div>
-              <span 
-                className="createApi" 
-                style={{color: snap.color.value}}
-                onClick={handleSubmit}
-              >
-                Create
-              </span>
-            </div>
+            <CreateButton
+              canvasRef={canvasRef}
+              rotateToBack={ClickOnRotateToBack}
+            />
           </motion.div>
         </>
       </AnimatePresence>
