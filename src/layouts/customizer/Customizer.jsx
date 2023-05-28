@@ -16,6 +16,8 @@ import ColorPicker from "./parts/colorPicker/ColorPicker";
 import FilePicker from "./parts/filePicker/FilePicker";
 import TextPicker from "./parts/textPicker/TextPicker";
 import AIPicker from "./parts/aipPicker/AIPicker";
+import { BASE_URL } from "config/constants";
+import axios from "axios";
 
 
 const Customizer = ({
@@ -91,7 +93,7 @@ const Customizer = ({
     }
   }, [isScreenshotClicked, canvasRef]);
 
-  //create a new instance of RecordRTC by passing in the canvas stream, then starts recording and stops after 4 seconds. The resulting video is downloaded as a file using a temporary anchor element.
+  //create a new instance of RecordRTC by passing in the canvas stream, then starts recording and stops after 5 seconds. The resulting video is downloaded as a file using a temporary anchor element.
   // start recording the canvas stream
 
   const startRecording = () => {
@@ -112,6 +114,25 @@ const Customizer = ({
         tempAnchor.click();
       });
     }, 5000);
+  };
+
+  const handleSubmit = async () => {
+    // Capture screenshot of front of shirt
+    const screenshotDataURL = canvasRef.current.toDataURL("image/png");
+
+    // Send screenshot and decal file to server
+    const formData = new FormData();
+    formData.append("screenshot", screenshotDataURL);
+    formData.append("decalFile", file);
+
+    try {
+      const response = await axios.post(`${BASE_URL}/3d`, formData);
+      if(response.status === 200) {
+        console.log('Successful response');
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -282,6 +303,16 @@ const Customizer = ({
                 style={{ color: snap.color.value }}
               />
             </IconContext.Provider>
+            {/* create api */}
+            <div>
+              <span 
+                className="createApi" 
+                style={{color: snap.color.value}}
+                onClick={handleSubmit}
+              >
+                Create
+              </span>
+            </div>
           </motion.div>
         </>
       </AnimatePresence>
