@@ -17,8 +17,6 @@ import FilePicker from "./parts/filePicker/FilePicker";
 import TextPicker from "./parts/textPicker/TextPicker";
 import AIPicker from "./parts/aipPicker/AIPicker";
 import CreateButton from "./parts/createButton/CreateButton";
-import { BASE_URL } from "config/constants";
-import axios from "axios";
 
 const Customizer = ({
   onButtonClick,
@@ -55,6 +53,7 @@ const Customizer = ({
             setFile={setFile}
             setActiveEditorTab={setActiveEditorTab}
             showFront={showFront}
+            setShowFront={setShowFront}
             decalRef={decalRef}
             setDecalExists={setDecalExists}
           />
@@ -71,7 +70,7 @@ const Customizer = ({
       default:
         return null;
     }
-  }, [activeEditorTab, file, prompt, showFront, decalRef]);
+  }, [activeEditorTab, file, prompt, showFront, decalRef, setShowFront]);
 
   //screenShot
   const handleScreenshotClick = () => {
@@ -116,32 +115,10 @@ const Customizer = ({
     }, 5000);
   };
 
-  const handleSubmit = async () => {
-    // Capture screenshot of front of shirt
-    const screenshotDataURL = canvasRef.current.toDataURL("image/png");
-
-    // Send screenshot and decal file to server
-    const formData = new FormData();
-    formData.append("screenshot", screenshotDataURL);
-    formData.append("decalFile", file);
-
-    // try {
-    //   const response = await axios.post(`${BASE_URL}/3d`, formData);
-    //   if(response.status === 200) {
-    //     console.log('Successful response');
-    //   }
-    // } catch (error) {
-    //   console.error(error);
-    // }
-  };
-
   const ClickOnRotateToBack = () => {
     if (decalExists) {
       onButtonClick(Math.PI);
-      setShowFront(false);
-    } else {
-      onButtonClick(Math.PI);
-    }
+    } 
   }
 
   return (
@@ -282,10 +259,7 @@ const Customizer = ({
                 onClick={() => {
                   if (decalExists) {
                     onButtonClick(0);
-                    setShowFront(true);
-                  } else {
-                    onButtonClick(0);
-                  }
+                  } 
                 }}
                 style={{ color: snap.color.value }}
               />
@@ -301,7 +275,11 @@ const Customizer = ({
               <RiSendToBack
                 type="outline"
                 title="Rotate to Back"
-                onClick={ClickOnRotateToBack}
+                onClick={() => {
+                  if (decalExists) {
+                    onButtonClick(Math.PI);
+                  } 
+                }}
                 style={{ color: snap.color.value }}
               />
             </IconContext.Provider>

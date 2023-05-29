@@ -1,8 +1,10 @@
+import './CreateButton.css'
 import { useSnapshot } from "valtio";
 import axios from "axios";
 
 import state from "../../../../store";
 import { BASE_URL } from "config/constants";
+import { getContrastingColor } from 'config/helpers';
 
 
 const CreateButton = ({ canvasRef, rotateToBack }) => {
@@ -85,7 +87,10 @@ const CreateButton = ({ canvasRef, rotateToBack }) => {
   return (
     <button
       className="createApi"
-      style={{ color: snap.color.value }}
+      style={{ 
+        backgroundColor: snap.color.value, 
+        color: getContrastingColor(snap.color.value) 
+      }}
       onClick={clickOnCreate}
     >
       Create

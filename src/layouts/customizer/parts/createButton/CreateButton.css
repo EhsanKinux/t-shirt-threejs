@@ -1,5 +1,18 @@
 
-
-/* .createApi{
-    b
-} */
+.createApi{
+    display: inline-block;
+    outline: 0;
+    cursor: pointer;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px 0 rgba(213, 217, 217, 0.175);
+    /* background: #FFD814; */
+    border: none;
+    font-size: 11px;
+    height: 22px;
+    padding: 0 6px;
+    text-align: center;
+    font-weight: 500;
+}
+.createApi:hover{
+    box-shadow: 0 2px 5px 0 rgba(213, 217, 217, 0.175);
+}

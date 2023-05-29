@@ -7,6 +7,7 @@ import { DecalTypes, FilterPosition } from "config/constants";
 import { getContrastingColor, reader } from "config/helpers";
 import state from "../../../../store";
 import SwitchLogo from "./parts/switchLogo/SwitchLogo";
+import SetBackFront from "./parts/setBackFront/SetBackFront";
 
 const FilePicker = ({
   file,
@@ -15,6 +16,7 @@ const FilePicker = ({
   showFront,
   decalRef,
   setDecalExists,
+  setShowFront,
 }) => {
   const snap = useSnapshot(state);
 
@@ -169,6 +171,7 @@ const FilePicker = ({
             className="logoBtn"
           />
         </div>
+        <SetBackFront setShowFront={setShowFront} />
       </div>
     </div>
   );
