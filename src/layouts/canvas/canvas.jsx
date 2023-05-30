@@ -61,14 +61,31 @@ const CanvasLayout = () => {
 
           <Center>
             <Suspense fallback={Loading}>
-              <Models angle={angle} setIsAnimating={setIsAnimating} isAnimating={isAnimating} canvasRef={canvasRef} showFront={showFront} setLogoPosition decalRef={decalRef}/>
+              <Models 
+                angle={angle} 
+                setIsAnimating={setIsAnimating} 
+                isAnimating={isAnimating} 
+                canvasRef={canvasRef} 
+                showFront={showFront} 
+                setLogoPosition decalRef={decalRef}
+              />
             </Suspense>
           </Center>
 
         </CameraRig>
       </Canvas>
       {/* Only show the customizer after the canvas has loaded */}
-      {(isCanvasLoaded && canvasRef.current) && <Customizer onButtonClick={handleButtonClick} canvasRef={canvasRef} startAnimation={startAnimation} angle={angle} setShowFront={setShowFront} showFront={showFront} decalRef={decalRef} />}
+      {(isCanvasLoaded && canvasRef.current) && (
+        <Customizer 
+          onButtonClick={handleButtonClick} 
+          canvasRef={canvasRef} 
+          startAnimation={startAnimation} 
+          angle={angle} 
+          setShowFront={setShowFront} 
+          showFront={showFront} 
+          decalRef={decalRef} 
+        />
+      )}
     </div>
   )
 }
