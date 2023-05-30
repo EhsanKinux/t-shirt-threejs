@@ -15,14 +15,15 @@ const Models = ({
   const [selectedModel, setSelectedModel] = useState(null);
 
   useEffect(() => {
-    fetchModels();
+    fetchModels('6474a7a09dd9e4b229eb4842');
   }, []);
 
 
-  const fetchModels = async () => {
+  const fetchModels = async (id) => {
     try {
-      const response = await axios.get(`${BASE_URL}/3d`);
+      const response = await axios.get(`${BASE_URL}/pod/${id}`);
       setSelectedModel(response.data[0]);
+      console.log(response.data);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -32,7 +33,7 @@ const Models = ({
 
   return (
     <>
-      {(selectedModel !== null) && (
+      {(selectedModel !== null) && selectedModel.graphic_url && (
         <Shirt
           angle={angle}
           setIsAnimating={setIsAnimating}
@@ -41,7 +42,7 @@ const Models = ({
           showFront={showFront}
           setLogoPosition
           decalRef={decalRef}
-          modelURl={selectedModel?.url}
+          modelURl={selectedModel.graphic_url}
         />
       )}
     </>
