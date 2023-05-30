@@ -23,7 +23,6 @@ const Models = ({
     try {
       const response = await axios.get(`${BASE_URL}/pod/${id}`);
       setSelectedModel(response.data[0]);
-      console.log(response.data);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
