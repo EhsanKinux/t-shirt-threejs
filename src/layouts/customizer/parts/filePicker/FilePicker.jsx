@@ -159,7 +159,7 @@ const FilePicker = ({
           </div>
         ) : (
           <span style={{ color: snap.color.value }}>
-            The logo is set to the back
+            The logo is set to back
           </span>
         )}
 
