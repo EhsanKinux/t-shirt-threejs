@@ -17,6 +17,7 @@ import FilePicker from "./parts/filePicker/FilePicker";
 import TextPicker from "./parts/textPicker/TextPicker";
 import AIPicker from "./parts/aipPicker/AIPicker";
 import CreateButton from "./parts/createButton/CreateButton";
+import Svg from "assets/svg/Svg";
 
 const Customizer = ({
   onButtonClick,
@@ -126,9 +127,10 @@ const Customizer = ({
       <AnimatePresence>
         <>
           <motion.header {...slideAnimation("left")}>
-            <h1 style={{ color: `${snap.color.value}` }} className="headerText">
-              Droplinked
-            </h1>
+            {/* <h1 style={{ color: `${snap.color.value}` }} className="headerText">
+              droplinked
+            </h1> */}
+            <Svg className="headerText" />
           </motion.header>
 
           {/* leftside Tabs */}
