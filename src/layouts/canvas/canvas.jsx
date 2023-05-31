@@ -45,7 +45,7 @@ const CanvasLayout = () => {
       <Canvas 
         className="canvas"
         shadows
-        camera={{position: [0,0,4.2], fov:66}}
+        camera={{position: [0,0,5], fov:80}}
         // preserve the buffers
         gl={{preserveDrawingBuffer:true}}
         raycaster={{ far: 3.5 }}
