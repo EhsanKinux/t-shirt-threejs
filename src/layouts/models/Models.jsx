@@ -15,7 +15,7 @@ const Models = ({
   const [selectedModel, setSelectedModel] = useState(null);
 
   useEffect(() => {
-    fetchModels('6474a7a09dd9e4b229eb4842');
+    fetchModels('647788018ab33f75a08597d0');
   }, []);
 
 
