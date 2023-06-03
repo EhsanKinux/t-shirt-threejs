@@ -5,11 +5,14 @@ import axios from "axios";
 import state from "../../../../store";
 import { BASE_URL } from "config/constants";
 import { getContrastingColor } from 'config/helpers';
+import { useState } from 'react';
+import Loading from 'components/loading/Loading';
 
 
 const CreateButton = ({ canvasRef, rotateToBack }) => {
   const snap = useSnapshot(state);
   const token = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJlZGkubW5zKzNkQGdtYWlsLmNvbSIsInN1YiI6IjY0NmY5ZDI0ZDA2YzE2Mzc5MTE4OWFlZiIsInJvbGUiOiJQUk9EVUNFUiIsInN0YXR1cyI6Ik5FVyIsImlhdCI6MTY4NTAzNjQzNiwiZXhwIjoxNjg1NjQxMjM2fQ.FU_RsSC36hgyz8VDdiC1dvYaq7Ef34RzypOBjcppeKg"
+  const [isSendingData, setIsSendingData] = useState(false);
 
   function dataURLtoBlob(dataURL) {
     const byteString = atob(dataURL.split(",")[1]);
@@ -42,7 +45,7 @@ const CreateButton = ({ canvasRef, rotateToBack }) => {
       });
   };
 
-  const callProdcutApi = async (frontMock, backMock, mockResult) => {
+  const callProdcutApi = async (frontMock, backMock, mockArtwork) => {
     const requestBody = {
       title: "test",
       description: "test",
@@ -56,9 +59,11 @@ const CreateButton = ({ canvasRef, rotateToBack }) => {
         {
             isMain: false,
             url: backMock,
-          },
+        },
       ],
-      artwork: mockResult,
+      artwork_image: mockArtwork,
+      artwork_position: state.logoDecalPosition, 
+      images: [frontMock, backMock],
     };
 
     const response = await axios.put(
@@ -74,27 +79,33 @@ const CreateButton = ({ canvasRef, rotateToBack }) => {
   };
 
   const clickOnCreate = async () => {
+    setIsSendingData(true);
     const frontMock = await uploadMock(
       canvasRef.current.toDataURL("image/png")
     );
     rotateToBack();
-    const mockResult = await uploadMock(snap.logoDecal);
+    const mockArtwork = await uploadMock(snap.logoDecal);
     const backMock = await uploadMock(canvasRef.current.toDataURL("image/png"));
 
-    await callProdcutApi(frontMock, backMock, mockResult);
+    await callProdcutApi(frontMock, backMock, mockArtwork);
+
+    setIsSendingData(false);
   };
 
   return (
-    <button
-      className="createApi"
-      style={{ 
-        backgroundColor: snap.color.value, 
-        color: getContrastingColor(snap.color.value) 
-      }}
-      onClick={clickOnCreate}
-    >
-      Create
-    </button>
+    <div className='createBtnWrapper'>
+      <button
+        className="createApi"
+        style={{ 
+          backgroundColor: snap.color.value, 
+          color: getContrastingColor(snap.color.value) 
+        }}
+        onClick={clickOnCreate}
+        >
+        Create
+      </button>
+      {isSendingData && <Loading/>}
+    </div>
   );
 };
 
