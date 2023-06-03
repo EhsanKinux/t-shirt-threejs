@@ -27,12 +27,14 @@ const state = proxy({
     isFront: true,
     // new property to store the text entered by the user
     textValue:' ',
-    // logo positions
+    // logo positions to set for decal
     position: {
         left: false,
         middle: true,
         right: false
-    }
+    },
+    // the state to track the logo position
+    logoDecalPosition: 'FRONT_CENTER',
 })
 
 export default state;
