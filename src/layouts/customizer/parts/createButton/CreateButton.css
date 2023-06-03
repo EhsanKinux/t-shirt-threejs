@@ -16,3 +16,10 @@
 .createApi:hover{
     box-shadow: 0 2px 5px 0 rgba(213, 217, 217, 0.175);
 }
+
+.createBtnWrapper{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
