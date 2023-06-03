@@ -87,7 +87,24 @@ useEffect(() => {
         setLogoPosition([-0.01, 0.08, 0.15]);
         setRotation([0,0,0]);
       }
-}, [ showFront, snap.isLogoTexture, snap.color.value])
+
+      // Set the logo decal position state variable
+      if (snap.position.middle) {
+        state.logoDecalPosition = 'FRONT_CENTER';
+      } else if (snap.position.right) {
+        state.logoDecalPosition = 'FRONT_TOP_RIGHT';
+      } else if (snap.position.left) {
+        state.logoDecalPosition = 'FRONT_TOP_LEFT';
+      } else {
+        state.logoDecalPosition = 'BACK_CENTER'
+      }
+}, [ showFront, 
+    snap.isLogoTexture, 
+    snap.color.value, 
+    snap.position.left, 
+    snap.position.middle, 
+    snap.position.right
+  ])
   /////////////////////text control/////////////////////////
 
   // const createTextCanvas = (text, textColor) => {
